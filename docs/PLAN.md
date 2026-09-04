@@ -16,15 +16,13 @@
 
 ## Decisions to confirm before building
 
-These are stated as working assumptions so the build isn't blocked. Each needs a yes/no from Ted or the team.
+These are the choices that affect how the yearbook team works, so they are worth confirming before building. Purely technical decisions — file size limits, how uploads are handled — are settled and live in Part 2.
 
-| # | Assumption | Why it matters | Alternative |
-|---|---|---|---|
-| D1 | **Decided.** Team shares one Gumnut login for now | Gumnut has no user-to-user library sharing *yet*; it is on their near-term roadmap. When it ships, each team member gets their own login with no change to this app. | — |
-| D2 | **Revised.** v1 accepts **photos and videos up to 100 MB** | 100 MB is the request-body ceiling and comfortably covers ordinary phone clips. Gumnut stores video natively and generates poster frames. Storage cost is the thing to watch (§9). | Client-side transcoding to fit larger clips under the cap — recorded as a stretch goal, not planned |
-| D3 | **Revised.** Per-file limit **100 MB**, **no cap on files per submission** | 100 MB is the Cloudflare account request-body limit — the real ceiling. The 30-file cap was my invention, not a technical limit, and is removed. | Requires the streaming upload path in §14 |
-| D4 | **Decided, expanded.** Access codes embedded in the link (`?c=…`), **one per distribution channel, individually revocable** | The code rides in QR and newsletter URLs, so parents never type it. Per-channel codes mean a leak can be killed without disrupting everyone, and the label says which channel leaked (§16). | — |
-| D5 | **Out of scope.** Next school year is not designed now | Library and albums are config values, so reusing this library with new albums, or a fresh library, both stay open | Decide when next year actually arrives |
+| # | Decision | What it means for the team |
+|---|---|---|
+| **D1** | **The team shares one Gumnut login** to review photos | Everyone uses the same username and password for now, so there is no record of who did what. Gumnut is adding per-person logins soon; when it arrives, each team member gets their own and nothing about the app changes. |
+| **D2** | **Each way of sharing the link gets its own access code** | The code is built into the QR codes and newsletter links, so nobody ever types it. Giving the posters, the newsletter, and each class parent a different code means one can be switched off without disrupting the others — useful if a link ends up somewhere it shouldn't. |
+| **D3** | **Next school year is not being designed yet** | Albums and storage are settings, not code, so whether next year reuses this library or starts a fresh one can be decided when it arrives rather than guessed at now. |
 
 ---
 
@@ -35,7 +33,7 @@ These are stated as working assumptions so the build isn't blocked. Each needs a
 1. **Make it effortless for a parent to contribute photos.** Scan a QR code at a school event, pick photos from the camera roll, tap upload. No account, no password, no app to install.
 2. **Get photos to the team already organized.** Photos arrive tagged with who sent them and which event/album they belong to, so the team isn't sorting an undifferentiated pile.
 3. **Protect family privacy by default.** No parent can browse the collection — not other families' photos, and not their own. The app collects; it never displays.
-4. **Be reusable.** The library and album list are configuration, not code, so a future team can point the app at new albums without a developer. How next year is actually structured is deliberately left open (D5).
+4. **Be reusable.** The library and album list are configuration, not code, so a future team can point the app at new albums without a developer. How next year is actually structured is deliberately left open (D3).
 5. **Be maintainable by someone other than the person who built it.** Public code repository, documented setup, accounts owned by the school/team rather than an individual.
 
 ## 2. Scope and non-goals
@@ -160,7 +158,7 @@ For the app to outlive whoever builds it:
 | Code hosting (GitHub) | $0 | Public repository |
 | Photo + video storage (Gumnut) | **$0 expected** | Gumnut's default 10 GB is expected to cover the year, and the limit can be raised if needed. Video is the swing factor: 500 photos ≈ 2 GB, but 150 phone clips could reach the cap on their own. |
 
-**The whole thing is expected to run at $0.** The one number to watch is storage, because allowing video (D2) makes it unpredictable — a single minute of phone video costs more than a hundred photos, and nobody can say in advance how many clips parents will send.
+**The whole thing is expected to run at $0.** The one number to watch is storage, because accepting video makes it unpredictable — a single minute of phone video costs more than a hundred photos, and nobody can say in advance how many clips parents will send.
 
 **It matters because hitting the cap fails loudly and all at once.** Gumnut rejects *every* upload with a `507` when the library is full — including duplicates — so the symptom is every parent failing simultaneously, most likely the evening after a big event. Raising the limit fixes it, but only if someone notices. Kari should check remaining capacity after each major event; that is the one recurring operational duty this project has.
 | **Total** | **~$5 / month + storage** | |
@@ -248,24 +246,26 @@ export const CONFIG = {
 } as const;
 ```
 
-**On future years (D5):** deliberately not designed now. Adding albums to this same library is an edit to `albums`. Moving to a separate library per year is an edit to `libraryId` plus a re-scoped API key. Both stay available because nothing outside this file knows the year. Do not build multi-year machinery until someone actually needs it.
+**On future years (D3):** deliberately not designed now. Adding albums to this same library is an edit to `albums`. Moving to a separate library per year is an edit to `libraryId` plus a re-scoped API key. Both stay available because nothing outside this file knows the year. Do not build multi-year machinery until someone actually needs it.
 
 **QR / deep links** use slugs, never raw Gumnut IDs:
 `https://yearbook.oldmillschool.org/?a=field-day,fifth-grade&c=<access-code>`
 
 ## 14. Upload contract
 
-`POST /api/upload` — `multipart/form-data`, **exactly one file per request.** The browser runs a small concurrency pool (2–3 in flight) over the selected files.
+`POST /api/upload` — **exactly one file per request**, sent as the **raw request body** rather than as a multipart form (§14.1 explains why). The browser runs a small concurrency pool (2–3 in flight) over the selected files.
 
-Request fields: `file`, `uploaderName`, `comments`, `albums` (comma-separated slugs), `deviceId`, `deviceAssetId`, `fileCreatedAt`, `turnstileToken`, `accessCode`.
+Metadata travels in query parameters, not the body: `uploaderName`, `comments`, `albums` (comma-separated slugs), `deviceId`, `deviceAssetId`, `fileCreatedAt`, `fileName`, `turnstileToken`, `accessCode`. `Content-Type` and `Content-Length` describe the file itself.
 
 Response: `{ ok: true, isDuplicate }` or a typed error. **No asset ID or URL is returned to the browser** — it has no use for either, and not returning them keeps the client incapable of referring to a stored photo at all.
 
-**Why one file per request:** constant Worker memory, a clean per-file progress bar, per-file retry without redoing the batch, and a natural mapping onto Gumnut's rate limiter. Because each file is its own HTTP request, **there is no technical limit on files per submission** — a parent can send 300 photos from an event; the browser just works through the queue.
+**Limits:** **100 MB per file** — the Cloudflare account request-body ceiling, and the real constraint — and **no cap on the number of files** in a submission.
+
+**Why one file per request:** constant Worker memory, a clean per-file progress bar, per-file retry without redoing the batch, and a natural mapping onto Gumnut's rate limiter. It is also what removes any cap on batch size — a parent can send 300 photos from an event and the browser simply works through the queue.
 
 ### 14.1 The upload must stream — do not buffer
 
-This is the requirement that sets the 100 MB limit in D3, and it is the single easiest thing to get wrong.
+This is the requirement that sets the 100 MB per-file limit, and it is the single easiest thing to get wrong.
 
 **What the SDK actually does** (verified in `src/internal/uploads.ts`):
 
@@ -300,7 +300,7 @@ Steps 2 and 3 are best-effort: if they fail, still return the `assetId`, and log
 
 Accept `image/*` plus explicit `image/heic,image/heif` in the file input so iOS offers the original HEIC rather than transcoding. **Gumnut stores and renders HEIC natively** (confirmed: `pillow-heif` registered server-side, HEIC decode handled at the CDN edge).
 
-### 14.2 Video (D2)
+### 14.2 Video
 
 Also accept `video/*`. Nothing about the upload path changes — the streaming approach in §14.1 is indifferent to what the bytes are, which is precisely why allowing video is cheap now and would have been expensive under a buffering design.
 
@@ -377,7 +377,7 @@ No login means no strong identity, so the goal is raising cost, not perfect prev
    *If instant revocation ever matters more than simplicity,* move the list to a KV namespace so it changes without a deploy. Not worth it at this scale.
 2. **Cloudflare Turnstile** on the form — invisible for nearly all real parents, blocks scripted submission.
 3. **Rate limiting per IP and per `deviceId`** in the Worker (Cloudflare Rate Limiting rules, or a Durable Object / KV counter): e.g. 100 files per device per day, 300 per IP per day.
-4. **Server-side file validation:** magic-byte check (don't trust `Content-Type` or extension), size cap (D3), and reject anything that isn't a real image.
+4. **Server-side file validation:** magic-byte check (don't trust `Content-Type` or extension), size cap (§14.1), and reject anything that isn't a real image or video.
 5. **Collection window** enforced server-side, not just hidden in the UI.
 
 Deliberately **not** doing: image content moderation, or blocking on ML classification. The team reviews everything in Gumnut before anything reaches a page, which is the real backstop.
