@@ -23,6 +23,7 @@ These are the choices that affect how the yearbook team works, so they are worth
 | **D1** | **The team shares one Gumnut login** to review photos | Everyone uses the same username and password for now, so there is no record of who did what. Gumnut is adding per-person logins soon; when it arrives, each team member gets their own and nothing about the app changes. |
 | **D2** | **Each way of sharing the link gets its own access code** | The code is built into the QR codes and newsletter links, so nobody ever types it. Giving the posters, the newsletter, and each class parent a different code means one can be switched off without disrupting the others — useful if a link ends up somewhere it shouldn't. |
 | **D3** | **Next school year is not being designed yet** | Albums and storage are settings, not code, so whether next year reuses this library or starts a fresh one can be decided when it arrives rather than guessed at now. |
+| **D4** | **What happens to the photos after the yearbook is printed** | Uploading is consent for the yearbook and nothing more, so once the book is done the photos have no agreed purpose. Deleting them is a perfectly good answer. Keeping them is also fine — but only with a reason, an end date, someone responsible, and a line on the upload page saying so *before* families start sending photos. This is the decision that is hardest to revisit later, so it is worth settling first. See §6. |
 
 ---
 
@@ -54,7 +55,7 @@ Not built at all:
 - **A public gallery.** There is no page, anywhere, where one family can see another family's photos.
 - **Parent accounts or logins.** Contributing takes no sign-in.
 - **Any destructive action from the upload app** — no delete, no edit, no overwrite, for anyone. See §5 for the reasoning; it is a design principle, not a missing feature.
-- **Any use of the photos outside the school's own purposes.** They are collected for the yearbook and kept as a school archive (§6); they are not shared, sold, or handed to anyone else.
+- **Any use of the photos outside the yearbook.** Uploading a photo puts it in front of the yearbook team for possible inclusion in the book. It is not permission to use it in the newsletter, on the school website, in fundraising materials, or anywhere else. A broader use would have to be asked for separately (§6).
 
 **Getting the photos back out** is already handled: Gumnut can download a whole album, or any selection, as a single ZIP of originals — from the web app, or via the API. So when it is time to lay out pages, the yearbook team exports the album and works from real files. See §15.6.
 
@@ -120,19 +121,22 @@ The rest of this section covers only what is **specific to this app and this pro
 - **Nothing is public.** There is no public gallery, and no page anywhere that displays the collection.
 - **No parent-to-parent visibility.** The app never shows one family's photos to another family. It never shows a contributor their own photos either — it collects and does not display (§5).
 - **What the app asks for:** the photos and clips, the uploader's name as typed, an optional note, and which albums they chose. It does not ask for email, phone number, or student names.
-- **Rights attestation.** The upload form carries a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook and be kept in the school's photo archive."* Contributors routinely upload photos containing other people's children, so this is stated plainly rather than buried. **The exact wording needs the team's sign-off (§10)** — it must match what §6 says the photos are actually for, including archive use, not just this year's book.
+- **Rights attestation.** The upload form carries a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook."* Contributors routinely upload photos containing other people's children, so this is stated plainly rather than buried. The exact wording needs the team's sign-off (§10).
+- **What uploading does *not* grant.** The scope of that checkbox is deliberately narrow, and the rest of the project has to respect it. Uploading a photo stores it so the yearbook team can consider it for the book. It is **not** consent to use it in any other school material — not the newsletter, not the website, not fundraising, not social media. A parent handing over candid shots of other people's children for a yearbook should not thereby be granting the school an open-ended license, and if a broader use is ever wanted, the right move is to ask for it then rather than to have quietly collected it now.
 
 ### Specific to this project
 
 - **The school's photo release policy.** Families can ask that their child not appear in the yearbook. Historically this has been difficult to honor reliably: across hundreds of candid event photos, there has been no practical way to know whether a covered child is in a given shot, so compliance depended on someone recognizing a face during layout.
 
   Because the team can now identify who appears in which photos, covered children can be **marked in Gumnut and excluded reliably** rather than by eye. The mechanics are in §15.6. Two consequences worth stating up front:
-  - **The policy governs the archive, not just the book.** These photos are meant for use beyond this spring, so the release policy applies to that future use too.
-  - **The identifying information has to persist** for that to keep working. Discarding it later would return the school to not knowing who is in which photo.
+  - **This is the first time the policy is actually enforceable.** The yearbook is precisely what the policy covers, and marking covered children turns compliance from "hope someone recognizes the face" into a filter the team can apply to every candidate photo.
+  - **The identifying information has to persist for as long as the photos do.** Discarding it while keeping the photos would return the school to not knowing who is in which photo — the worst of both. If the photos are deleted, the markings go with them.
 
-  **Action item (§10):** read the release policy closely and confirm what it actually covers — yearbook only, or all school publications and archives; whether it is opt-in or opt-out; and how a family registers or changes a preference. The team's handling should follow the policy's real terms rather than an assumed version of them.
+  **Action item (§10):** read the release policy closely and confirm what it actually covers — yearbook only, or all school publications; whether it is opt-in or opt-out; and how a family registers or changes a preference. The team's handling should follow the policy's real terms rather than an assumed version of them.
 
-- **Retention.** The photos are intended to outlive this year's yearbook and serve as a school archive. *Open question for the team:* how long it is kept, and who is responsible for it once this year's team disbands.
+- **Retention, and the case for deleting.** Because uploading is consent for the yearbook and nothing more, the photos have no agreed purpose once the book is printed. **Deleting the whole library at that point is a legitimate default, not a failure to plan** — it is the option most consistent with what contributors were actually told, and it leaves the school holding no collection of other people's children that nobody has a stated use for.
+
+  *Open question for the team:* whether to delete after the book goes to print, or to keep the library for a defined period and for a stated reason. If the team wants to keep it, that is a decision to make deliberately and to say out loud on the upload page **before** collection starts, not one to arrive at by default afterward. Keeping it also means naming who is responsible for it once this year's team disbands.
 
 ## 7. Removal requests
 
@@ -149,7 +153,7 @@ For the app to outlive whoever builds it:
 
   Either is acceptable. A personal account as the *permanent* home is not.
 - **Sequencing:** the project starts on a temporary domain and personal accounts, and **migrates as soon as an institutional owner exists.** That migration is a tracked task, not a someday intention — it is the difference between a maintainable school asset and a project that quietly belongs to one parent.
-- Note that the Gumnut account is the one that matters most: it holds the photos, the archive, and the team's record of who appears in them (§15.6). Domain and code hosting can be moved cheaply at any time; the photo library is the thing with gravity.
+- Note that the Gumnut account is the one that matters most: it holds the photos and the team's record of who appears in them (§15.6). Domain and code hosting can be moved cheaply at any time; the photo library is the thing with gravity.
 - Credentials live in a password manager the owning body controls.
 - The code is public on GitHub. Secrets are never in the code.
 - A `README` documents how to change what the app collects into: create an album in Gumnut, add it to the config file, deploy, print a QR code. That is the whole recurring operation.
@@ -175,10 +179,10 @@ For the app to outlive whoever builds it:
 - [ ] **Album list** for the year (e.g. Lapathon, Field Day, Class Photos, Fifth Grade, Winter Concert…)
 - [ ] **Submission deadline** for the collection window
 - [ ] **Brand inputs:** school colors (hex values), logo file, mascot artwork, and any font or style guidance. *We will not guess these.*
-- [ ] **Approval of the app's privacy language** in §6, and specifically the **wording of the rights-attestation checkbox** — it is the one sentence contributors actually agree to, and it needs to describe archive use, not just the yearbook
-- [ ] **Read the school's photo release policy closely** (§6) — what it covers (yearbook only, or all publications and the archive), opt-in or opt-out, and how a family registers or changes a preference. **The one item that may need the school office rather than a team meeting, so start it early.**
+- [ ] **Approval of the app's privacy language** in §6, and specifically the **wording of the rights-attestation checkbox** — it is the one sentence contributors actually agree to, and it is deliberately scoped to the yearbook alone
+- [ ] **Read the school's photo release policy closely** (§6) — what it covers (yearbook only, or all school publications), opt-in or opt-out, and how a family registers or changes a preference. **The one item that may need the school office rather than a team meeting, so start it early.**
 - [ ] **Agree how covered children are marked** in Gumnut (e.g. a `(DNR)` suffix), matching the policy's actual terms
-- [ ] **Retention decision** (§6) — how long the archive is kept, and who owns it once this year's team disbands
+- [ ] **Retention decision** (§6) — **delete the library once the yearbook is printed, or keep it?** Uploading is consent for the yearbook only, so keeping the photos past that needs a stated reason, a defined period, a named owner, and language on the upload page *before* collection starts. Decide this early; it is much harder to add after the fact.
 - [ ] **The yearbook lead's email address** for the site and for removal requests
 
 ## 11. Build order
@@ -374,7 +378,7 @@ Worth knowing when writing the handoff docs, because this is where the yearbook 
 - **Browse, search, and view** the collection, including video playback with seeking.
 - **Tag people** — Gumnut detects and groups faces automatically; the team puts names to those groups, adding manual face boxes for anyone missed. Two things depend on this:
   - **Coverage.** *Do we have enough photos of each child?* is a list rather than a squint through thumbnails.
-  - **Release-policy handling (§6).** Children covered by the policy are marked in the person's name — a suffix such as `(DNR)` — so every photo they appear in surfaces with the marker attached and can be excluded reliably. This information needs to persist for as long as the archive does; deleting it would return the school to not knowing who is in which photo.
+  - **Release-policy handling (§6).** Children covered by the policy are marked in the person's name — a suffix such as `(DNR)` — so every photo they appear in surfaces with the marker attached and can be excluded reliably. This information needs to persist for as long as the photos do; deleting it while keeping the photos would return the school to not knowing who is in which photo.
 - **Bulk download** — select any set of photos, or a whole album, and download them as a ZIP of originals. Available in the Gumnut web app and through the API. (Mechanically the zipping happens in the browser rather than on a server, which makes no difference to how it is used.)
 - **Trash** — soft delete, recoverable for 90 days, which is the safety net behind removal requests (§7).
 
