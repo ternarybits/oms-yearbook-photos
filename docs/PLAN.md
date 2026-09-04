@@ -56,7 +56,7 @@ Not built at all:
 - **Any destructive action from the upload app** — no delete, no edit, no overwrite, for anyone. See §5 for the reasoning; it is a design principle, not a missing feature.
 - **Any use of the photos outside the yearbook.**
 
-**Getting the photos back out** is already handled: Gumnut can download a whole album, or any selection, as a single ZIP of originals — from the web app, or via the API. So when it is time to lay out pages, Kari exports the album and works from real files. See §15.6.
+**Getting the photos back out** is already handled: Gumnut can download a whole album, or any selection, as a single ZIP of originals — from the web app, or via the API. So when it is time to lay out pages, the yearbook team exports the album and works from real files. See §15.6.
 
 ## 3. Who uses this
 
@@ -442,7 +442,7 @@ This is the list Claude Design should work from. Every state here is reachable i
 
 ## 20. Implementation milestones for Claude Code
 
-**M1 — Upload path.** Worker + static page. One album, hard-coded. Name, comments, rights checkbox. Single-file-per-request **streaming** upload with concurrency pool. Magic-byte validation, size cap. stream to `POST /api/assets` → `updateAsset` → album add, with duplicate-append handling (§15.1). Deploy to `*.workers.dev`. Build the streaming upload path from §14.1 first — retrofitting it later means redoing the client/server contract. *Exit: a phone uploads 10 photos, a 90 MB file succeeds, and Kari sees correct attribution in Gumnut.*
+**M1 — Upload path.** Worker + static page. One album, hard-coded. Name, comments, rights checkbox. Single-file-per-request **streaming** upload with concurrency pool. Magic-byte validation, size cap. stream to `POST /api/assets` → `updateAsset` → album add, with duplicate handling per §15.1 (description written only on 201). Deploy to `*.workers.dev`. Build the streaming upload path from §14.1 first — retrofitting it later means redoing the client/server contract. *Exit: a phone uploads 10 photos, a 90 MB file succeeds, and Kari sees correct attribution in Gumnut.*
 
 **M2 — Albums and QR codes.** Config file, album multi-select, slug-based URL presets, QR generation page, collection window enforced server-side. Custom subdomain.
 
