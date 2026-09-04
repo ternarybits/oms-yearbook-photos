@@ -30,7 +30,7 @@ These are the choices that affect how the yearbook team works, so they are worth
 
 ## 1. Goals
 
-1. **Make it effortless for a parent to contribute photos.** Scan a QR code at a school event, pick photos from the camera roll, tap upload. No account, no password, no app to install.
+1. **Make it effortless to contribute photos.** Scan a QR code at a school event, pick photos from the camera roll, tap upload. No account, no password, no app to install.
 2. **Get photos to the team already organized.** Photos arrive tagged with who sent them and which event/album they belong to, so the team isn't sorting an undifferentiated pile.
 3. **Protect family privacy by default.** No parent can browse the collection — not other families' photos, and not their own. The app collects; it never displays.
 4. **Be reusable.** The library and album list are configuration, not code, so a future team can point the app at new albums without a developer. How next year is actually structured is deliberately left open (D3).
@@ -54,7 +54,7 @@ Not built at all:
 - **A public gallery.** There is no page, anywhere, where one family can see another family's photos.
 - **Parent accounts or logins.** Contributing takes no sign-in.
 - **Any destructive action from the upload app** — no delete, no edit, no overwrite, for anyone. See §5 for the reasoning; it is a design principle, not a missing feature.
-- **Any use of the photos outside the yearbook.**
+- **Any use of the photos outside the school's own purposes.** They are collected for the yearbook and kept as a school archive (§6); they are not shared, sold, or handed to anyone else.
 
 **Getting the photos back out** is already handled: Gumnut can download a whole album, or any selection, as a single ZIP of originals — from the web app, or via the API. So when it is time to lay out pages, the yearbook team exports the album and works from real files. See §15.6.
 
@@ -71,7 +71,7 @@ The lead and the volunteers currently **share one Gumnut login** (D1). That is t
 
 **The maintainer role is meant to be handed off.** Ted holds it this year and may again next year, but the job is deliberately scoped so that **any parent with a technical background can take it over** — add an album to a config file, deploy, occasionally check storage. That constraint is why the stack is small and boring (§12), why nothing depends on its original author, and why the accounts belong to an institution rather than a person (§8). A maintainer who has to understand a clever architecture is a maintainer the project cannot replace.
 
-## 4. What a parent can do (supported user stories)
+## 4. What a contributor can do (supported user stories)
 
 **S1 — Upload photos and clips from an event.**
 A parent scans the QR code posted at the Lapathon. The page opens already knowing the upload is for the Lapathon album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third graders on the back stretch, ~2pm"), check the rights box, and tap Upload. A progress indicator shows each file completing, and the page confirms how many went through.
@@ -82,19 +82,19 @@ A parent follows the link from the school newsletter or a class-parent email. Th
 **S3 — Put one batch into more than one album.**
 Photos from a single afternoon that belong in both "Field Day" and "Fifth Grade" are added to both, in one submission.
 
-**S3b — Send a large batch.**
+**S4 — Send a large batch.**
 A parent who shot 200 photos at Field Day selects them all and uploads in one go. The browser works through them steadily; nothing caps the count.
 
-**S4 — Understand exactly who can see their photos.**
+**S5 — Understand exactly who can see their photos.**
 Plain-language privacy text is on the upload page itself, not buried in a link, including the fact that this is a one-way submission.
 
-**S5 — Send more photos later, from any device.**
+**S6 — Send more photos later, from any device.**
 A parent can come back as many times as they like, from a phone or a laptop, with no login and nothing to remember. Each visit is a fresh submission. Sending the same photo twice is harmless — Gumnut keeps one copy (§15.1).
 
-**S6 — Get a clear answer when the window has closed.**
+**S7 — Get a clear answer when the window has closed.**
 After the submission deadline, the page explains that collection is closed and who to contact.
 
-## 5. What a parent cannot do, and why
+## 5. What a contributor cannot do, and why
 
 | Not supported | Reason |
 |---|---|
@@ -120,7 +120,7 @@ The rest of this section covers only what is **specific to this app and this pro
 - **Nothing is public.** There is no public gallery, and no page anywhere that displays the collection.
 - **No parent-to-parent visibility.** The app never shows one family's photos to another family. It never shows a contributor their own photos either — it collects and does not display (§5).
 - **What the app asks for:** the photos and clips, the uploader's name as typed, an optional note, and which albums they chose. It does not ask for email, phone number, or student names.
-- **Rights attestation.** The upload form carries a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook."* Contributors routinely upload photos containing other people's children, so this is stated plainly rather than buried.
+- **Rights attestation.** The upload form carries a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook and be kept in the school's photo archive."* Contributors routinely upload photos containing other people's children, so this is stated plainly rather than buried. **The exact wording needs the team's sign-off (§10)** — it must match what §6 says the photos are actually for, including archive use, not just this year's book.
 
 ### Specific to this project
 
@@ -163,11 +163,11 @@ For the app to outlive whoever builds it:
 | Domain | $0 | A subdomain of a district or PTA domain the school community already owns |
 | Code hosting (GitHub) | $0 | Public repository |
 | Photo + video storage (Gumnut) | **$0 expected** | Gumnut's default 10 GB is expected to cover the year, and the limit can be raised if needed. Video is the swing factor: 500 photos ≈ 2 GB, but 150 phone clips could reach the cap on their own. |
+| **Total** | **$0 expected**, $5/mo worst case | Nothing here requires a purchase order |
 
 **The whole thing is expected to run at $0.** The one number to watch is storage, because accepting video makes it unpredictable — a single minute of phone video costs more than a hundred photos, and nobody can say in advance how many clips parents will send.
 
 **It matters because hitting the cap fails loudly and all at once.** Gumnut rejects *every* upload with a `507` when the library is full — including duplicates — so the symptom is every parent failing simultaneously, most likely the evening after a big event. Raising the limit fixes it, but only if someone notices. The yearbook lead should check remaining capacity after each major event; that is the one recurring operational duty this project has.
-| **Total** | **~$5 / month + storage** | |
 
 ## 10. What we need from the school and team
 
@@ -175,7 +175,7 @@ For the app to outlive whoever builds it:
 - [ ] **Album list** for the year (e.g. Lapathon, Field Day, Class Photos, Fifth Grade, Winter Concert…)
 - [ ] **Submission deadline** for the collection window
 - [ ] **Brand inputs:** school colors (hex values), logo file, mascot artwork, and any font or style guidance. *We will not guess these.*
-- [ ] **Approval of the app's privacy language** in §6
+- [ ] **Approval of the app's privacy language** in §6, and specifically the **wording of the rights-attestation checkbox** — it is the one sentence contributors actually agree to, and it needs to describe archive use, not just the yearbook
 - [ ] **Read the school's photo release policy closely** (§6) — what it covers (yearbook only, or all publications and the archive), opt-in or opt-out, and how a family registers or changes a preference. **The one item that may need the school office rather than a team meeting, so start it early.**
 - [ ] **Agree how covered children are marked** in Gumnut (e.g. a `(DNR)` suffix), matching the policy's actual terms
 - [ ] **Retention decision** (§6) — how long the archive is kept, and who owns it once this year's team disbands
@@ -185,13 +185,13 @@ For the app to outlive whoever builds it:
 
 Each stage is independently useful and shippable.
 
-**Stage 1 — Upload works.** Themed page, photo picker, name + note fields, rights checkbox, uploads land in one Gumnut album. Privacy text. Deployed to a temporary address. *This alone is enough to start collecting.*
+**Stage 1 — Upload works.** Themed page, photo picker, name + note fields, rights checkbox, uploads land in one Gumnut album. Privacy text. Access code and collection window enforced from the start — both are a few lines each (§16), and Stage 1 is already collecting real photos of real children at a public URL, so it should not run wide open while the rest is built. Deployed to a temporary address. *This alone is enough to start collecting.*
 
 **Stage 2 — Albums and QR codes.** Multi-select album list, QR links that pre-select an album, a printable QR sheet for the yearbook lead. Move to the permanent subdomain.
 
 **Stage 3 — Deadline handling.** Collection window enforced, with a clear closed-for-the-year page.
 
-**Stage 4 — Handoff.** Abuse protections, documentation, and transfer of account ownership to the team, so the app can run without its original author.
+**Stage 4 — Handoff.** The remaining abuse protections (Turnstile, rate limiting), documentation, and transfer of account ownership to the team, so the app can run without its original author.
 
 **Later, if wanted:** a team gallery in the app, real parent accounts, and the uploader-initiated deletion those would unlock (§5).
 
@@ -202,14 +202,16 @@ Each stage is independently useful and shippable.
 ## 12. Architecture
 
 ```
-Parent's browser                Cloudflare Worker              Gumnut
-─────────────────               ─────────────────              ──────
-static page + JS   ──POST──▶    /api/upload                    
- (one file per         file      ├─ verify access code
-  request, 2–3        + fields   ├─ verify Turnstile token
-  concurrent)                    ├─ check magic bytes, size, type
-                                 ├─ assets.create ─────────────▶ POST /api/assets
-                                 ├─ assets.updateAsset ────────▶ PATCH description
+Contributor's browser           Cloudflare Worker              Gumnut
+─────────────────────           ─────────────────              ──────
+static page + JS   ──POST──▶    /api/upload
+ (one file per      raw bytes    ├─ check access code hash
+  request, 2–3      as the body  ├─ check collection window
+  concurrent)       + headers    ├─ verify Turnstile token
+                                 ├─ check magic bytes, size, type
+                                 ├─ stream body ───────────────▶ POST /api/assets
+                                 │   (§14.1 — never buffered)
+                                 ├─ set metadata.description ──▶ PATCH asset (201 only)
                                  ├─ albums.assetsAssociations.add ▶ album membership
                     ◀──JSON──    └─ {ok, isDuplicate}
 ```
@@ -219,8 +221,9 @@ The browser keeps nothing. Once a file is uploaded and confirmed, the app has no
 **Key properties:**
 
 - The Gumnut API key exists **only** as a Worker secret. It is never sent to the browser and never in the repository.
-- Thumbnails are rendered from Gumnut's **signed CDN URLs**, fetched directly by the browser. The Worker is not a proxy for image bytes — only for uploads.
-- The Worker holds no database. All per-parent state is in that parent's browser.
+- The Worker is a **streaming proxy, not a store**. File bytes pass through it to Gumnut without ever being buffered or written anywhere (§14.1). It never serves image bytes back out — the app has no gallery.
+- The Worker's only persistent state is **rate-limit counters** (KV or a Durable Object, §16), keyed by `deviceId` and IP. Nothing there identifies a contributor, and it expires on its own.
+- The browser stores exactly one thing: a random `deviceId` UUID, used only for rate limiting.
 
 **Stack recommendation:** Cloudflare Workers with static assets (Worker + `[assets]` binding), Hono for routing, `gumnut-sdk` (TypeScript) for the Gumnut calls, plain TypeScript + a light CSS approach for the frontend. Deliberately boring and small — a future maintainer should be able to read the whole thing in an afternoon. No framework is required for a single-page form.
 
@@ -260,7 +263,11 @@ export const CONFIG = {
 
 `POST /api/upload` — **exactly one file per request**, sent as the **raw request body** rather than as a multipart form (§14.1 explains why). The browser runs a small concurrency pool (2–3 in flight) over the selected files.
 
-Metadata travels in query parameters, not the body: `uploaderName`, `comments`, `albums` (comma-separated slugs), `deviceId`, `deviceAssetId`, `fileCreatedAt`, `fileName`, `turnstileToken`, `accessCode`. `Content-Type` and `Content-Length` describe the file itself.
+Metadata travels in **request headers**, not the body and not the query string: `X-Uploader-Name`, `X-Comments`, `X-Albums` (comma-separated slugs), `X-Device-Id`, `X-Device-Asset-Id`, `X-File-Created-At`, `X-File-Name`, `X-Turnstile-Token`, `X-Access-Code`. `Content-Type` and `Content-Length` describe the file itself.
+
+**Headers rather than the query string, deliberately.** Cloudflare's request logs and analytics record the full request URL but not arbitrary headers. A contributor's name and free-text comment are exactly the personal data §6 promises to keep to the yearbook team — putting them in a URL would copy them into logging infrastructure nobody in this project controls or thinks about. Header values must be encoded (RFC 2047 or base64) since names and comments can contain non-ASCII characters. The *page* URL is a different matter: `?a=…&c=…` there carries only album slugs and a semi-public access code, both of which are printed on posters anyway.
+
+**Validate both text fields server-side**: cap `X-Uploader-Name` at 100 characters and `X-Comments` at 1,000, strip control characters, and reject anything longer rather than truncating silently. These strings are written into Gumnut where the team will read them.
 
 Response: `{ ok: true, isDuplicate }` or a typed error. **No asset ID or URL is returned to the browser** — it has no use for either, and not returning them keeps the client incapable of referring to a stored photo at all.
 
@@ -281,13 +288,15 @@ So the SDK is not the problem. **`request.formData()` on the inbound side is** �
 
 **Therefore the Worker must never call `request.formData()` for the file.** Instead:
 
-1. The browser `POST`s the **raw file as the request body**, with metadata in headers or query params (`?name=…&deviceAssetId=…&albums=…`) rather than as multipart fields.
+1. The browser `POST`s the **raw file as the request body**, with metadata in the request headers listed in §14 (`X-Uploader-Name`, `X-Device-Asset-Id`, `X-Albums`, …) rather than as multipart fields.
 2. The Worker builds the outbound `multipart/form-data` body as a `ReadableStream`: a text prelude carrying the scalar fields and the file part header, then **`request.body` piped straight through**, then the closing boundary.
 3. It sends that with a raw `fetch` to `POST /api/assets` with `Content-Type: multipart/form-data; boundary=…` and the `Authorization: Bearer` header — bypassing `assets.create` for this one call.
 
 Memory then stays constant regardless of file size, and the limit becomes Cloudflare's account-level request-body cap: **100 MB on Free/Pro, 200 MB on Business.**
 
-The SDK is still used normally for every *other* call (`updateAsset`, album association, retrieve) — those are small JSON requests where its ergonomics are worth having. Only the upload call is hand-rolled, and it should be one well-commented function with a test.
+The SDK is still used normally for the two *other* calls (`updateAsset` and album association) — small JSON requests where its ergonomics are worth having. Only the upload call is hand-rolled, and it should be one well-commented function with a test.
+
+**Because it is hand-rolled, that function does not inherit the SDK's retry behavior** (§15.3). The upload is both the most expensive call in Gumnut's rate limiter (20 tokens) and the one most likely to be throttled during an after-event rush, so it must handle `429` itself: honor `Retry-After`, back off exponentially with jitter, and cap at two or three attempts before surfacing a retryable error to the browser. It must also recognize `507` (library full) and fail immediately without retrying, since retrying cannot help.
 
 This also pairs with gap **G3**: if Gumnut ships scoped upload tokens, this hand-rolled function disappears entirely and the browser uploads directly.
 
@@ -297,7 +306,7 @@ This also pairs with gap **G3**: if Gumnut ships scoped upload tokens, this hand
 2. `client.assets.updateAsset(id, { description })` where description is the attribution block (§15.1).
 3. For each selected album: `client.albums.assetsAssociations.add(albumId, { asset_ids: [id] })`.
 
-Steps 2 and 3 are best-effort: if they fail, still return the `assetId`, and log. A photo that landed without its note is recoverable; a photo that was rejected because its note failed to save is not.
+Steps 2 and 3 are best-effort: if they fail, still return `{ ok: true }` to the browser, and log the asset ID together with the attribution and album slugs that failed to attach. A photo that landed without its note is recoverable — the team can fix it in Gumnut from that log line. A photo rejected because its note failed to save is simply lost.
 
 `file_created_at` and `file_modified_at` are required by the API — use the browser's `File.lastModified` for both. Gumnut derives real capture time from EXIF server-side, so this is only a fallback.
 
@@ -334,7 +343,7 @@ Two consequences:
   Description format — one block, written once, structured enough to parse and readable in Gumnut's UI:
   ```
   Uploaded by: Jane Smith (2026-10-12)
-  Notes: Third grade booth, around 2pm
+  Notes: Third graders on the back stretch, around 2pm
   ```
 - **A photo the team has trashed will silently "succeed" on re-upload** and return the trashed asset without restoring it. The parent sees success; the photo does not reappear. Acceptable, but the team should know: trashing is not the same as blocking.
 
@@ -348,7 +357,7 @@ Two consequences:
 
 Weighted token bucket: **400 capacity, refills 100/second.** An upload costs **20 tokens** — roughly 5 uploads/second sustained, 20 in a burst. Because the app uses one API key on one account, **every parent uploading at once shares this budget.** Realistic worst case is the evening after a big event.
 
-Mitigations: 2–3 concurrent uploads per browser (not 10); the SDK's built-in backoff; surface a `429` to the client as an automatic retry with jitter, not as a failure. Watch `X-RateLimit-Remaining`. This is the app's scaling ceiling and should be revisited if the school grows the program.
+Mitigations: 2–3 concurrent uploads per browser (not 10); retry on `429` with jitter rather than surfacing a failure; watch `X-RateLimit-Remaining`. **Note that the SDK's built-in backoff does not cover the call that matters** — the upload is hand-rolled precisely so it can stream (§14.1), so it must implement its own `Retry-After` handling. That is called out as a requirement in §14.1. This is the app's scaling ceiling and should be revisited if the school grows the program.
 
 ### 15.4 No description or album at create time
 
@@ -383,7 +392,9 @@ No login means no strong identity, so the goal is raising cost, not perfect prev
 
    *If instant revocation ever matters more than simplicity,* move the list to a KV namespace so it changes without a deploy. Not worth it at this scale.
 2. **Cloudflare Turnstile** on the form — invisible for nearly all real parents, blocks scripted submission.
-3. **Rate limiting per IP and per `deviceId`** in the Worker (Cloudflare Rate Limiting rules, or a Durable Object / KV counter): e.g. 100 files per device per day, 300 per IP per day.
+3. **Rate limiting per `deviceId`, and a burst limit per IP** in the Worker (Cloudflare Rate Limiting rules, or a Durable Object / KV counter). Suggested starting points: **500 files per device per day**, and **60 uploads per minute per IP** rather than a daily per-IP cap.
+
+   Both numbers need to clear the legitimate cases, or the limit becomes the bug. S4 describes a parent sending 200 photos in one sitting and §14 describes 300 from an event, so any per-device daily cap below ~500 would reject exactly the user we designed for. The per-IP rule is worse: at an indoor event on the school's guest Wi-Fi, *every* parent shares one egress IP, so a daily per-IP cap would cut off the whole gym partway through the Winter Concert. A per-minute burst limit still stops a script while leaving a crowd of real parents alone.
 4. **Server-side file validation:** magic-byte check (don't trust `Content-Type` or extension), size cap (§14.1), and reject anything that isn't a real image or video.
 5. **Collection window** enforced server-side, not just hidden in the UI.
 
@@ -398,7 +409,7 @@ Ordered by how much they'd improve this app.
 | # | Gap | Impact here | What would fix it |
 |---|---|---|---|
 | G1 | **No library sharing between users; no roles** — *on Gumnut's near-term roadmap* | Forces the team onto one shared Gumnut login (D1) in the meantime: no audit trail of who trashed what, and a password that circulates as volunteers turn over. Adopting it later needs no change to this app. | Library membership with viewer/editor roles (planned) |
-| G2 | **No write-only API key scope** — `read` is still required alongside `write` | **The app makes zero read calls by design** (§15.1), so it is ready to use a write-only key the moment one exists. Until then its key can read every photo and every person tag (§15.6) — a compromised Worker secret exposes the whole collection to buy nothing at all. **See the note below: this may already be resolved.** | Allow `actions: ["write"]` without `read` |
+| G2 | **No write-only API key scope** — `read` is still required alongside `write` | **The app makes zero read calls by design** (§15.1), so it is ready to use a write-only key the moment one exists. Until then its key can read every photo and every person tag (§15.6) — a compromised Worker secret exposes the whole collection to buy nothing at all. **See the note above: this may already be resolved.** | Allow `actions: ["write"]` without `read` |
 | G3 | **No short-lived, scoped upload tokens** | The Worker must sit in the data path for every byte. A token minted per submission, scoped to one album and a few minutes, would let the browser upload directly to Gumnut — removing the Worker size limits, the concurrency tuning, and most of the rate-limit pressure. **This is the single biggest architectural simplification available.** | Mint-a-scoped-upload-token endpoint |
 | G4 | **No description or album membership at create time** | 3 API calls per photo instead of 1, and three chances to half-succeed. Cheap in rate-limit terms (20 + 1 + 1 tokens, not 3× 20) but it is the main source of partial-failure states in §14. | Optional `description` and `album_ids` on `POST /api/assets` |
 | G5 | **No structured provenance field** | Minor. The user-set `metadata.description` is a separate field from the AI caption, so nothing overwrites the uploader's name — but it is still free text, so "which photos did Jane send?" is not a query the team can run. | A structured `contributed_by` field, or arbitrary key-value metadata |
@@ -411,7 +422,9 @@ Ordered by how much they'd improve this app.
 ```
 oms-yearbook-photos/          # public GitHub repo, NOT under the gumnut org
 ├── README.md                 # setup, how to add albums, account ownership
-├── PLAN.md                   # this document
+├── LICENSE                   # MIT — see below
+├── docs/
+│   └── PLAN.md               # this document
 ├── wrangler.toml
 ├── src/
 │   ├── index.ts              # Worker: routes + static assets
@@ -432,6 +445,8 @@ Access codes are deliberately **not** secrets: only their hashes are committed (
 
 **Note on the public repo:** library IDs, album IDs, access-code hashes, school branding, and the whole app are fine in public. The threat model is only the two secrets above.
 
+**A license is required, not optional.** Goal 5 is that anyone with a technical background can pick this up and run it. Public code with no license file is *not* open source — by default nobody else has permission to modify or redeploy it, which would defeat the whole point. MIT is the right choice: it is short, it is what a future volunteer will expect, and it imposes nothing on the school. Add it in M1.
+
 ## 19. Screens and states
 
 This is the list Claude Design should work from. Every state here is reachable in the real app.
@@ -449,12 +464,12 @@ This is the list Claude Design should work from. Every state here is reachable i
 
 ## 20. Implementation milestones for Claude Code
 
-**M1 — Upload path.** Worker + static page. One album, hard-coded. Name, comments, rights checkbox. Single-file-per-request **streaming** upload with concurrency pool. Magic-byte validation, size cap. stream to `POST /api/assets` → `updateAsset` → album add, with duplicate handling per §15.1 (description written only on 201). Deploy to `*.workers.dev`. Build the streaming upload path from §14.1 first — retrofitting it later means redoing the client/server contract. *Exit: a phone uploads 10 photos, a 90 MB file succeeds, and the yearbook lead sees correct attribution in Gumnut.*
+**M1 — Upload path.** Worker + static page. One album, hard-coded. Name, comments, rights checkbox. Single-file-per-request **streaming** upload with concurrency pool. Magic-byte validation, size cap, header-field length limits. Stream to `POST /api/assets` → `updateAsset` → album add, with duplicate handling per §15.1 (description written only on 201). Access-code hash check and collection-window check — a hash compare and a date compare, cheap enough to belong here rather than at the end. `LICENSE` and a first `README`. Deploy to `*.workers.dev`. Build the streaming upload path from §14.1 first — retrofitting it later means redoing the client/server contract. *Exit: a phone uploads 10 photos, a 90 MB file succeeds, a bad access code is rejected, and the yearbook lead sees correct attribution in Gumnut.*
 
-**M2 — Albums and QR codes.** Config file, album multi-select, slug-based URL presets, QR generation page, collection window enforced server-side. Permanent subdomain.
+**M2 — Albums and QR codes.** Config file, album multi-select, slug-based URL presets, QR generation page. Permanent subdomain.
 
-**M3 — Deadline and polish.** Collection window enforced server-side, closed-for-the-year page, full error-state coverage.
+**M3 — Polish and error handling.** Closed-for-the-year page, full error-state coverage (§19.7), `429` retry with `Retry-After` (§14.1), `507` storage-full handling, partial-failure retry.
 
-**M4 — Hardening and handoff.** Turnstile, access code, per-IP and per-device rate limits, error states, GitHub Actions deploy, README, account-ownership transfer.
+**M4 — Hardening and handoff.** Turnstile, per-device and per-IP rate limits, GitHub Actions deploy, full README, account-ownership transfer.
 
 Throughout: no secrets in the client bundle, no endpoint that lists assets to a browser, and every Gumnut call goes through the Worker.
