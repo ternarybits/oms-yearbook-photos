@@ -74,7 +74,7 @@ The lead and the volunteers currently **share one Gumnut login** (D1). That is t
 ## 4. What a parent can do (supported user stories)
 
 **S1 — Upload photos and clips from an event.**
-A parent scans the QR code posted at the Lapathon. The page opens already knowing the upload is for the Lapathon album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third graders on the back stretch, ~2pm"), check the rights box, and tap Upload. A progress indicator shows each file completing. They get a clear confirmation.
+A parent scans the QR code posted at the Lapathon. The page opens already knowing the upload is for the Lapathon album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third graders on the back stretch, ~2pm"), check the rights box, and tap Upload. A progress indicator shows each file completing, and the page confirms how many went through.
 
 **S2 — Upload without a QR code.**
 A parent follows the link from the school newsletter or a class-parent email. That link carries the same access code the QR codes use, so the form opens normally — they just choose which album(s) apply from the published list rather than having one pre-selected. Someone who types the bare subdomain with no link sees a short page explaining where to get the link (newsletter, class parent, or the yearbook lead's email) rather than an error.
@@ -99,15 +99,13 @@ After the submission deadline, the page explains that collection is closed and w
 | Not supported | Reason |
 |---|---|
 | See other people's photos | Core privacy commitment |
-| **See their own photos after uploading** | The app is upload-only. Once the confirmation screen is dismissed, there is no gallery, no history, and nothing to come back to. Parents keep their own copies in their camera roll; the team has theirs. |
+| **See their own photos after uploading** | The app is upload-only. There is no gallery and no history — the originals stay in the contributor's camera roll, where they already were. |
 | **Delete a photo after uploading** | **By design, not a v1 shortcut.** Deleting is destructive and irreversible from the parent's side, so it must require *proof that you are the person who uploaded it*. "Same device" is not proof — phones get handed to kids, shared, lent, and resold. Without a real login there is nothing to check, so the app offers no delete at all. Email the yearbook lead (§7). |
 | **Edit the name or note after submitting** | Same reasoning. Editing someone else's attribution is a smaller harm than deleting their photo, but it rests on the same unmet identity claim. |
 
 **The principle behind this whole table:** the app performs **no action on a photo after it is uploaded** — not viewing it, not editing it, not deleting it — because it cannot verify who is asking. "Same device" is not proof of identity, and any feature built on it becomes an argument for the next one: a parent who can *see* their past uploads will reasonably ask to delete one. Rather than build that staircase and stop partway up, the app does not take the first step. Upload is a one-way door. If real accounts are ever added, that is the point at which any of this becomes discussable.
 
-**This is the most important thing to communicate to parents,** and the app says it directly: *"Your photos go straight to the yearbook team. Nobody browsing this site can see them — including you, afterwards. Keep your own copies."*
-
-That last clause matters. A parent who assumes the app is also a backup, and later deletes from their phone, has lost something. The confirmation screen should reinforce it (§19.4).
+**This is the most important thing to communicate to parents,** and the app says it directly: *"Your photos go straight to the yearbook team. Nobody browsing this site can see them."*
 
 ## 6. Privacy and consent
 
@@ -434,7 +432,7 @@ This is the list Claude Design should work from. Every state here is reachable i
 1. **Landing / upload form** — school branding, one-sentence explanation, privacy statement inline, uploader name field, comments field, album multi-select (pre-selected from URL params), rights-attestation checkbox, large "Choose photos or videos" target. Mobile-first: most parents arrive from a QR code on a phone.
 2. **Files selected** — thumbnail grid of chosen files with per-file remove, total count and size, Upload button enabled. Video tiles carry a play badge and duration. **Any clip over 100 MB is rejected here, before uploading**, with copy that says what to do (trim it in Photos and re-add) rather than just refusing.
 3. **Uploading** — per-file progress, overall progress, files completing one by one. Must survive slow school-parking-lot cellular gracefully, and must stay legible for a large batch: a parent sending 200 photos should see a sane summary, not 200 progress bars.
-4. **Upload complete** — clear success confirmation, count uploaded, "these are now with the yearbook team," and an option to send more. **This is the last time the parent sees these photos in the app**, so the confirmation has to carry real weight — this is the screen that has to feel like the photos arrived somewhere safe.
+4. **Upload complete** — success shown in place, not on a separate screen: the count that went through, "these are now with the yearbook team," and an easy way to send more.
 5. **Partial failure** — some succeeded, some failed, with retry for just the failed ones. Do not lose the successful work.
 6. **Collection closed** — friendly, dated, with the yearbook lead's contact.
 7. **Error states** — file too large, unsupported type, invalid or missing access code, rate limited (retrying), network lost, and **storage full** (Gumnut returns `507` when the account is at its cap — see §15.5). The storage-full state needs its own copy: it is not the parent's fault and it tells them to contact the yearbook lead rather than retry.
