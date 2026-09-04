@@ -74,7 +74,7 @@ The lead and the volunteers currently **share one Gumnut login** (D1). That is t
 ## 4. What a parent can do (supported user stories)
 
 **S1 — Upload photos and clips from an event.**
-A parent scans the QR code posted at the Fall Festival. The page opens already knowing the upload is for the Fall Festival album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third grade booth, ~2pm"), check the rights box, and tap Upload. A progress indicator shows each file completing. They get a clear confirmation.
+A parent scans the QR code posted at the Lapathon. The page opens already knowing the upload is for the Lapathon album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third graders on the back stretch, ~2pm"), check the rights box, and tap Upload. A progress indicator shows each file completing. They get a clear confirmation.
 
 **S2 — Upload without a QR code.**
 A parent follows the link from the school newsletter or a class-parent email. That link carries the same access code the QR codes use, so the form opens normally — they just choose which album(s) apply from the published list rather than having one pre-selected. Someone who types the bare subdomain with no link sees a short page explaining where to get the link (newsletter, class parent, or the yearbook lead's email) rather than an error.
@@ -168,7 +168,7 @@ For the app to outlive whoever builds it:
 ## 10. What we need from the school and team
 
 - [ ] **Subdomain decision** and an IT request to point it at the app (e.g. `yearbook.oldmillschool.org`) — or, if the school declines, a PTA-owned domain instead (§8). *Lead time here is the main scheduling risk; the app runs on a temporary address until it resolves.*
-- [ ] **Album list** for the year (e.g. Fall Festival, Field Day, Class Photos, Fifth Grade, Winter Concert…)
+- [ ] **Album list** for the year (e.g. Lapathon, Field Day, Class Photos, Fifth Grade, Winter Concert…)
 - [ ] **Submission deadline** for the collection window
 - [ ] **Brand inputs:** school colors (hex values), logo file, mascot artwork, and any font or style guidance. *We will not guess these.*
 - [ ] **Approval of the privacy language** in §6
@@ -233,7 +233,7 @@ export const CONFIG = {
   closesAt: "2027-03-15T23:59:59-07:00",
   contactEmail: "yearbook@oldmillschool.org",
   albums: [
-    { slug: "fall-festival", name: "Fall Festival", albumId: "album_..." },
+    { slug: "lapathon",      name: "Lapathon",      albumId: "album_..." },
     { slug: "field-day",     name: "Field Day",     albumId: "album_..." },
     { slug: "fifth-grade",   name: "Fifth Grade",   albumId: "album_..." },
   ],
@@ -241,7 +241,7 @@ export const CONFIG = {
   // Access codes, by SHA-256 hash — see §16. The codes themselves are never
   // committed; only their hashes, which are safe in a public repo.
   accessCodes: [
-    { label: "Fall Festival posters",  hash: "a3f1…", active: true },
+    { label: "Lapathon posters",       hash: "a3f1…", active: true },
     { label: "October newsletter",     hash: "9c22…", active: true },
     { label: "Back-to-school night",   hash: "51de…", active: false }, // revoked
   ],
@@ -370,7 +370,7 @@ No login means no strong identity, so the goal is raising cost, not perfect prev
 
 1. **Access codes in the link** (`?c=…`), checked server-side. Keeps the page out of drive-by and crawler traffic.
 
-   **Multiple codes, individually revocable.** Rather than one shared secret, issue a distinct code per distribution channel — one for the Fall Festival posters, one for the October newsletter, one per class parent. Three things follow: a leaked code can be killed without disrupting everyone else, the label on the code tells you *which channel* leaked, and codes can be retired when their event is over.
+   **Multiple codes, individually revocable.** Rather than one shared secret, issue a distinct code per distribution channel — one for the Lapathon posters, one for the October newsletter, one per class parent. Three things follow: a leaked code can be killed without disrupting everyone else, the label on the code tells you *which channel* leaked, and codes can be retired when their event is over.
 
    **How they live in a public repo.** The config holds only the **SHA-256 hash** of each code plus a label and an `active` flag (§13). The Worker hashes the submitted code and compares. The codes themselves are never committed, so the repo stays public and revocation is a one-line config edit plus a deploy — no secret rotation, no separate store.
 
