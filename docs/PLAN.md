@@ -142,8 +142,12 @@ A contributor who wants a photo removed emails the yearbook lead at an address p
 
 For the app to outlive whoever builds it:
 
-- **The target is institutional ownership** of the Cloudflare, GitHub, and Gumnut accounts, under an address like `yearbook@oldmillschool.org` rather than anyone's personal email.
-- **This is not resolved yet.** Whether the school will grant a subdomain and an institutional account is an open question. If it declines, the **PTA** — or a similar parent body — is the fallback owner. Either is acceptable; a personal account as the permanent home is not.
+- **The target is institutional ownership** of the Cloudflare, GitHub, and Gumnut accounts, under an institutional address rather than anyone's personal email.
+- **Two candidate homes**, and it is not yet settled which:
+  - **`mvschools.org`** — the school district. Carries the most weight, and makes the app unambiguously a school asset. Also the slower path: it means a district IT request, and district IT may reasonably decline to host a volunteer-built app.
+  - **`oldmillpta.org`** — the PTA. Almost certainly faster and more likely to say yes, and the PTA is a durable body that outlives any one family. A perfectly good permanent home, not merely a fallback.
+
+  Either is acceptable. A personal account as the *permanent* home is not.
 - **Sequencing:** the project starts on a temporary domain and personal accounts, and **migrates as soon as an institutional owner exists.** That migration is a tracked task, not a someday intention — it is the difference between a maintainable school asset and a project that quietly belongs to one parent.
 - Note that the Gumnut account is the one that matters most: it holds the photos, the archive, and the team's record of who appears in them (§15.6). Domain and code hosting can be moved cheaply at any time; the photo library is the thing with gravity.
 - Credentials live in a password manager the owning body controls.
@@ -156,7 +160,7 @@ For the app to outlive whoever builds it:
 | Item | Cost | Notes |
 |---|---|---|
 | App hosting (Cloudflare Workers) | **$0, likely** | The free tier gives 100,000 requests/day and the same 100 MB upload limit. Its 10 ms CPU cap is *CPU only* — time waiting on the network doesn't count, and a streaming upload is nearly all waiting. Budget $5/mo as a fallback if M1 shows otherwise. |
-| Domain | $0 | Uses a school subdomain |
+| Domain | $0 | A subdomain of a district or PTA domain the school community already owns |
 | Code hosting (GitHub) | $0 | Public repository |
 | Photo + video storage (Gumnut) | **$0 expected** | Gumnut's default 10 GB is expected to cover the year, and the limit can be raised if needed. Video is the swing factor: 500 photos ≈ 2 GB, but 150 phone clips could reach the cap on their own. |
 
@@ -167,7 +171,7 @@ For the app to outlive whoever builds it:
 
 ## 10. What we need from the school and team
 
-- [ ] **Subdomain decision** and an IT request to point it at the app (e.g. `yearbook.oldmillschool.org`) — or, if the school declines, a PTA-owned domain instead (§8). *Lead time here is the main scheduling risk; the app runs on a temporary address until it resolves.*
+- [ ] **Domain decision** — `yearbook.mvschools.org` (district) or `yearbook.oldmillpta.org` (PTA), plus whoever administers DNS pointing it at the app (§8). *Lead time here is the main scheduling risk; the app runs on a temporary address until it resolves, so **ask early and take whichever answer comes back first**.*
 - [ ] **Album list** for the year (e.g. Lapathon, Field Day, Class Photos, Fifth Grade, Winter Concert…)
 - [ ] **Submission deadline** for the collection window
 - [ ] **Brand inputs:** school colors (hex values), logo file, mascot artwork, and any font or style guidance. *We will not guess these.*
@@ -183,7 +187,7 @@ Each stage is independently useful and shippable.
 
 **Stage 1 — Upload works.** Themed page, photo picker, name + note fields, rights checkbox, uploads land in one Gumnut album. Privacy text. Deployed to a temporary address. *This alone is enough to start collecting.*
 
-**Stage 2 — Albums and QR codes.** Multi-select album list, QR links that pre-select an album, a printable QR sheet for the yearbook lead. Move to the school subdomain.
+**Stage 2 — Albums and QR codes.** Multi-select album list, QR links that pre-select an album, a printable QR sheet for the yearbook lead. Move to the permanent subdomain.
 
 **Stage 3 — Deadline handling.** Collection window enforced, with a clear closed-for-the-year page.
 
@@ -230,7 +234,7 @@ export const CONFIG = {
   displayName: "Old Mill School Yearbook",
   libraryId: "lib_...",
   closesAt: "2027-03-15T23:59:59-07:00",
-  contactEmail: "yearbook@oldmillschool.org",
+  contactEmail: "yearbook@oldmillpta.org",
   albums: [
     { slug: "lapathon",      name: "Lapathon",      albumId: "album_..." },
     { slug: "field-day",     name: "Field Day",     albumId: "album_..." },
@@ -250,7 +254,7 @@ export const CONFIG = {
 **On future years (D3):** deliberately not designed now. Adding albums to this same library is an edit to `albums`. Moving to a separate library per year is an edit to `libraryId` plus a re-scoped API key. Both stay available because nothing outside this file knows the year. Do not build multi-year machinery until someone actually needs it.
 
 **QR / deep links** use slugs, never raw Gumnut IDs:
-`https://yearbook.oldmillschool.org/?a=field-day,fifth-grade&c=<access-code>`
+`https://yearbook.oldmillpta.org/?a=field-day,fifth-grade&c=<access-code>`
 
 ## 14. Upload contract
 
@@ -447,7 +451,7 @@ This is the list Claude Design should work from. Every state here is reachable i
 
 **M1 — Upload path.** Worker + static page. One album, hard-coded. Name, comments, rights checkbox. Single-file-per-request **streaming** upload with concurrency pool. Magic-byte validation, size cap. stream to `POST /api/assets` → `updateAsset` → album add, with duplicate handling per §15.1 (description written only on 201). Deploy to `*.workers.dev`. Build the streaming upload path from §14.1 first — retrofitting it later means redoing the client/server contract. *Exit: a phone uploads 10 photos, a 90 MB file succeeds, and the yearbook lead sees correct attribution in Gumnut.*
 
-**M2 — Albums and QR codes.** Config file, album multi-select, slug-based URL presets, QR generation page, collection window enforced server-side. Custom subdomain.
+**M2 — Albums and QR codes.** Config file, album multi-select, slug-based URL presets, QR generation page, collection window enforced server-side. Permanent subdomain.
 
 **M3 — Deadline and polish.** Collection window enforced server-side, closed-for-the-year page, full error-state coverage.
 
