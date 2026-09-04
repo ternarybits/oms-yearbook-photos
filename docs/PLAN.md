@@ -107,30 +107,32 @@ After the submission deadline, the page explains that collection is closed and w
 
 **This is the most important thing to communicate to parents,** and the app says it directly: *"Your photos go straight to the yearbook team. Nobody browsing this site can see them."*
 
-## 6. Privacy and consent
+## 6. Privacy
 
-- **Nothing is public.** There is no public gallery. Uploads are visible only to the yearbook team.
-- **No parent-to-parent visibility.** The app never shows one family's photos to another family.
-- **What we collect:** the photos and video clips, the uploader's name as typed, an optional free-text note, and which albums they chose. We do not ask for email, phone, or student names.
-- **Rights attestation.** The upload form has a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook."* Parents frequently upload photos containing other people's children, so this is stated plainly.
-- **Face recognition and naming.** Gumnut automatically detects faces and groups photos of the same person together, and generates a written description of each photo so search works. On top of that, **the team intends to attach children's names to those face groups.**
+### Where the photos are stored
 
-  **Why:** to answer the question every yearbook has to answer — *do we have enough photos of each child?* Without it, checking coverage across hundreds of photos means a volunteer squinting at thumbnails. With it, it is a list.
+Uploads go to **Gumnut**, the photo library the yearbook team works in. Gumnut's privacy policy — **<https://gumnut.ai/privacy>** — is the authoritative document for how files are stored, how they are processed, how long they are kept, and how they can be exported or deleted. It is considerably more thorough than anything we would write here, and the upload page links to it directly.
 
-  In practice: the library holds a **name-to-face index of students**, built by the team from photos other families contributed. It is visible only to the yearbook team, never published, never shown to other families, and no names appear anywhere in the upload app. Gumnut groups faces; it does not know who anyone is until a person types a name.
+The rest of this section covers only what is **specific to this app and this project** — the things Gumnut's policy cannot know about.
 
-- **The photo release policy, and how naming actually enforces it.** The school's existing photo release policy lets a family ask that their child not appear in the yearbook. Historically that has been close to unenforceable in practice: with hundreds of candid event photos, **there has been no realistic way to know whether a covered child is in a given shot.** Compliance has depended on someone recognizing a face at layout time.
+### Specific to this app
 
-  Naming faces changes that, so the team will **mark covered children directly in the index — appending a marker such as `(DNR)` to the person's name.** Every photo containing that child then surfaces with the marker attached, and the team can exclude them reliably rather than hopefully.
+- **Nothing is public.** There is no public gallery, and no page anywhere that displays the collection.
+- **No parent-to-parent visibility.** The app never shows one family's photos to another family. It never shows a contributor their own photos either — it collects and does not display (§5).
+- **What the app asks for:** the photos and clips, the uploader's name as typed, an optional note, and which albums they chose. It does not ask for email, phone number, or student names.
+- **Rights attestation.** The upload form carries a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook."* Contributors routinely upload photos containing other people's children, so this is stated plainly rather than buried.
 
-  This reframes the whole question. Face naming is not a privacy cost that the release policy has to tolerate — **it is the mechanism that makes the release policy work for the first time.** A family that has asked for their child to be excluded is materially better protected with this system than without it.
+### Specific to this project
 
-  Two things follow:
-  - **The names must persist.** Deleting the index when the book ships would discard exactly the information needed to honor the policy on any future use of these photos (§8 retention).
-  - **The policy governs the archive, not just the book.** These photos are intended for future use beyond this year's yearbook, so the release policy applies to that future use too — not only to what gets printed in the spring.
+- **The school's photo release policy.** Families can ask that their child not appear in the yearbook. Historically this has been difficult to honor reliably: across hundreds of candid event photos, there has been no practical way to know whether a covered child is in a given shot, so compliance depended on someone recognizing a face during layout.
 
-  **Action item for the team (§10):** read the school's photo release policy closely and confirm what it actually covers — yearbook only, or all school publications and archives; whether it is opt-in or opt-out; and how a family registers or changes a preference. The marker convention should match the policy's real terms rather than an assumed version of them.
-- **Retention.** The photos are intended to outlive this year's yearbook and serve as a school archive. **The name index should be kept alongside them, not deleted** — it is what makes the release policy enforceable on any future use, and discarding it would return the school to the position of not knowing who is in which photo. *Open question for the team:* how long the archive is kept, and who is responsible for it once this year's team disbands.
+  Because the team can now identify who appears in which photos, covered children can be **marked in Gumnut and excluded reliably** rather than by eye. The mechanics are in §15.6. Two consequences worth stating up front:
+  - **The policy governs the archive, not just the book.** These photos are meant for use beyond this spring, so the release policy applies to that future use too.
+  - **The identifying information has to persist** for that to keep working. Discarding it later would return the school to not knowing who is in which photo.
+
+  **Action item (§10):** read the release policy closely and confirm what it actually covers — yearbook only, or all school publications and archives; whether it is opt-in or opt-out; and how a family registers or changes a preference. The team's handling should follow the policy's real terms rather than an assumed version of them.
+
+- **Retention.** The photos are intended to outlive this year's yearbook and serve as a school archive. *Open question for the team:* how long it is kept, and who is responsible for it once this year's team disbands.
 
 ## 7. Removal requests
 
@@ -143,11 +145,11 @@ For the app to outlive whoever builds it:
 - **The target is institutional ownership** of the Cloudflare, GitHub, and Gumnut accounts, under an address like `yearbook@oldmillschool.org` rather than anyone's personal email.
 - **This is not resolved yet.** Whether the school will grant a subdomain and an institutional account is an open question. If it declines, the **PTA** — or a similar parent body — is the fallback owner. Either is acceptable; a personal account as the permanent home is not.
 - **Sequencing:** the project starts on a temporary domain and personal accounts, and **migrates as soon as an institutional owner exists.** That migration is a tracked task, not a someday intention — it is the difference between a maintainable school asset and a project that quietly belongs to one parent.
-- Note that the Gumnut account is the one that matters most: it holds the photos, the archive, and the name index (§6). Domain and code hosting can be moved cheaply at any time; the photo library is the thing with gravity.
+- Note that the Gumnut account is the one that matters most: it holds the photos, the archive, and the team's record of who appears in them (§15.6). Domain and code hosting can be moved cheaply at any time; the photo library is the thing with gravity.
 - Credentials live in a password manager the owning body controls.
 - The code is public on GitHub. Secrets are never in the code.
 - A `README` documents how to change what the app collects into: create an album in Gumnut, add it to the config file, deploy, print a QR code. That is the whole recurring operation.
-- The runbook names **who watches remaining photo storage** (§9) and **who maintains the name index and its release-policy markers** (§6) — the two recurring duties the app cannot do for itself.
+- The runbook names **who watches remaining photo storage** (§9) and **who maintains the person tags and release-policy markers** (§15.6) — the two recurring duties the app cannot do for itself.
 
 ## 9. Costs
 
@@ -169,10 +171,9 @@ For the app to outlive whoever builds it:
 - [ ] **Album list** for the year (e.g. Lapathon, Field Day, Class Photos, Fifth Grade, Winter Concert…)
 - [ ] **Submission deadline** for the collection window
 - [ ] **Brand inputs:** school colors (hex values), logo file, mascot artwork, and any font or style guidance. *We will not guess these.*
-- [ ] **Approval of the privacy language** in §6
+- [ ] **Approval of the app's privacy language** in §6
 - [ ] **Read the school's photo release policy closely** (§6) — what it covers (yearbook only, or all publications and the archive), opt-in or opt-out, and how a family registers or changes a preference. **The one item that may need the school office rather than a team meeting, so start it early.**
-- [ ] **Agree the marker convention** for covered children (e.g. `(DNR)` appended to the name), matching the policy's actual terms
-- [ ] **Explicit sign-off on naming children's faces** (§6)
+- [ ] **Agree how covered children are marked** in Gumnut (e.g. a `(DNR)` suffix), matching the policy's actual terms
 - [ ] **Retention decision** (§6) — how long the archive is kept, and who owns it once this year's team disbands
 - [ ] **The yearbook lead's email address** for the site and for removal requests
 
@@ -358,7 +359,9 @@ There is no way to set a description or album membership in the create call — 
 Worth knowing when writing the handoff docs, because this is where the yearbook team actually spends its time:
 
 - **Browse, search, and view** the collection, including video playback with seeking.
-- **Tag people** — face detection plus manual face boxes for anyone missed (§6).
+- **Tag people** — Gumnut detects and groups faces automatically; the team puts names to those groups, adding manual face boxes for anyone missed. Two things depend on this:
+  - **Coverage.** *Do we have enough photos of each child?* is a list rather than a squint through thumbnails.
+  - **Release-policy handling (§6).** Children covered by the policy are marked in the person's name — a suffix such as `(DNR)` — so every photo they appear in surfaces with the marker attached and can be excluded reliably. This information needs to persist for as long as the archive does; deleting it would return the school to not knowing who is in which photo.
 - **Bulk download** — select any set of photos, or a whole album, and download them as a ZIP of originals. Available in the Gumnut web app and through the API. (Mechanically the zipping happens in the browser rather than on a server, which makes no difference to how it is used.)
 - **Trash** — soft delete, recoverable for 90 days, which is the safety net behind removal requests (§7).
 
@@ -391,7 +394,7 @@ Ordered by how much they'd improve this app.
 | # | Gap | Impact here | What would fix it |
 |---|---|---|---|
 | G1 | **No library sharing between users; no roles** — *on Gumnut's near-term roadmap* | Forces the team onto one shared Gumnut login (D1) in the meantime: no audit trail of who trashed what, and a password that circulates as volunteers turn over. Adopting it later needs no change to this app. | Library membership with viewer/editor roles (planned) |
-| G2 | **No write-only API key scope** — `read` is still required alongside `write` | **The app makes zero read calls by design** (§15.1), so it is ready to use a write-only key the moment one exists. Until then its key can read every photo and the named person index (§6) — a compromised Worker secret exposes the whole collection to buy nothing at all. **See the note below: this may already be resolved.** | Allow `actions: ["write"]` without `read` |
+| G2 | **No write-only API key scope** — `read` is still required alongside `write` | **The app makes zero read calls by design** (§15.1), so it is ready to use a write-only key the moment one exists. Until then its key can read every photo and every person tag (§15.6) — a compromised Worker secret exposes the whole collection to buy nothing at all. **See the note below: this may already be resolved.** | Allow `actions: ["write"]` without `read` |
 | G3 | **No short-lived, scoped upload tokens** | The Worker must sit in the data path for every byte. A token minted per submission, scoped to one album and a few minutes, would let the browser upload directly to Gumnut — removing the Worker size limits, the concurrency tuning, and most of the rate-limit pressure. **This is the single biggest architectural simplification available.** | Mint-a-scoped-upload-token endpoint |
 | G4 | **No description or album membership at create time** | 3 API calls per photo instead of 1, and three chances to half-succeed. Cheap in rate-limit terms (20 + 1 + 1 tokens, not 3× 20) but it is the main source of partial-failure states in §14. | Optional `description` and `album_ids` on `POST /api/assets` |
 | G5 | **No structured provenance field** | Minor. The user-set `metadata.description` is a separate field from the AI caption, so nothing overwrites the uploader's name — but it is still free text, so "which photos did Jane send?" is not a query the team can run. | A structured `contributed_by` field, or arbitrary key-value metadata |
@@ -429,7 +432,7 @@ Access codes are deliberately **not** secrets: only their hashes are committed (
 
 This is the list Claude Design should work from. Every state here is reachable in the real app.
 
-1. **Landing / upload form** — school branding, one-sentence explanation, privacy statement inline, uploader name field, comments field, album multi-select (pre-selected from URL params), rights-attestation checkbox, large "Choose photos or videos" target. Mobile-first: most parents arrive from a QR code on a phone.
+1. **Landing / upload form** — school branding, one-sentence explanation, the app's short privacy statement inline with a link out to Gumnut's full policy (§6), uploader name field, comments field, album multi-select (pre-selected from URL params), rights-attestation checkbox, large "Choose photos or videos" target. Mobile-first: most parents arrive from a QR code on a phone.
 2. **Files selected** — thumbnail grid of chosen files with per-file remove, total count and size, Upload button enabled. Video tiles carry a play badge and duration. **Any clip over 100 MB is rejected here, before uploading**, with copy that says what to do (trim it in Photos and re-add) rather than just refusing.
 3. **Uploading** — per-file progress, overall progress, files completing one by one. Must survive slow school-parking-lot cellular gracefully, and must stay legible for a large batch: a parent sending 200 photos should see a sane summary, not 200 progress bars.
 4. **Upload complete** — success shown in place, not on a separate screen: the count that went through, "these are now with the yearbook team," and an easy way to send more.
