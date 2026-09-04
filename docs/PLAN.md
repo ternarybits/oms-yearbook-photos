@@ -1,6 +1,6 @@
 # Old Mill School Yearbook Photo Collection — Plan
 
-**Status:** Draft for committee review
+**Status:** Draft for team review
 **Author:** Ted
 **Date:** 2026-09-04
 
@@ -8,7 +8,7 @@
 
 ## How to read this document
 
-**Part 1** is written for the yearbook committee and school administration. It covers what the app does, what it deliberately does not do, how family privacy is handled, what it costs, and what decisions we need from the committee. Part 1 can be shared on its own.
+**Part 1** is written for the yearbook team and school administration. It covers what the app does, what it deliberately does not do, how family privacy is handled, what it costs, and what decisions we need from the team. Part 1 can be shared on its own.
 
 **Part 2** is the technical appendix for the people who build and maintain the app. It also feeds Claude Design (screens and states) and Claude Code (architecture and build order).
 
@@ -16,11 +16,11 @@
 
 ## Decisions to confirm before building
 
-These are stated as working assumptions so the build isn't blocked. Each needs a yes/no from Ted or the committee.
+These are stated as working assumptions so the build isn't blocked. Each needs a yes/no from Ted or the team.
 
 | # | Assumption | Why it matters | Alternative |
 |---|---|---|---|
-| D1 | **Decided.** Committee shares one Gumnut login for now | Gumnut has no user-to-user library sharing *yet*; it is on their near-term roadmap. When it ships, each committee member gets their own login with no change to this app. | — |
+| D1 | **Decided.** Team shares one Gumnut login for now | Gumnut has no user-to-user library sharing *yet*; it is on their near-term roadmap. When it ships, each team member gets their own login with no change to this app. | — |
 | D2 | **Revised.** v1 accepts **photos and videos up to 100 MB** | 100 MB is the request-body ceiling and comfortably covers ordinary phone clips. Gumnut stores video natively and generates poster frames. Storage cost is the thing to watch (§9). | Client-side transcoding to fit larger clips under the cap — recorded as a stretch goal, not planned |
 | D3 | **Revised.** Per-file limit **100 MB**, **no cap on files per submission** | 100 MB is the Cloudflare account request-body limit — the real ceiling. The 30-file cap was my invention, not a technical limit, and is removed. | Requires the streaming upload path in §14 |
 | D4 | **Decided, expanded.** Access codes embedded in the link (`?c=…`), **one per distribution channel, individually revocable** | The code rides in QR and newsletter URLs, so parents never type it. Per-channel codes mean a leak can be killed without disrupting everyone, and the label says which channel leaked (§16). | — |
@@ -28,26 +28,26 @@ These are stated as working assumptions so the build isn't blocked. Each needs a
 
 ---
 
-# Part 1 — For the yearbook committee
+# Part 1 — For the yearbook team
 
 ## 1. Goals
 
 1. **Make it effortless for a parent to contribute photos.** Scan a QR code at a school event, pick photos from the camera roll, tap upload. No account, no password, no app to install.
-2. **Get photos to the committee already organized.** Photos arrive tagged with who sent them and which event/album they belong to, so the committee isn't sorting an undifferentiated pile.
+2. **Get photos to the team already organized.** Photos arrive tagged with who sent them and which event/album they belong to, so the team isn't sorting an undifferentiated pile.
 3. **Protect family privacy by default.** No parent can browse the collection — not other families' photos, and not their own. The app collects; it never displays.
-4. **Be reusable.** The library and album list are configuration, not code, so a future committee can point the app at new albums without a developer. How next year is actually structured is deliberately left open (D5).
-5. **Be maintainable by someone other than the person who built it.** Public code repository, documented setup, accounts owned by the school/committee rather than an individual.
+4. **Be reusable.** The library and album list are configuration, not code, so a future team can point the app at new albums without a developer. How next year is actually structured is deliberately left open (D5).
+5. **Be maintainable by someone other than the person who built it.** Public code repository, documented setup, accounts owned by the school/team rather than an individual.
 
 ## 2. Scope and non-goals
 
-**This app does two things: collect photos and get them safely into storage.** Everything the committee does *with* the photos afterwards happens in Gumnut, the photo library the app uploads into. Yearbook layout and printing are a separate effort entirely.
+**This app does two things: collect photos and get them safely into storage.** Everything the team does *with* the photos afterwards happens in Gumnut, the photo library the app uploads into. Yearbook layout and printing are a separate effort entirely.
 
 Not built in this app:
 
 | Not in this app | Where it happens instead |
 |---|---|
-| Browsing and searching the collection | The Gumnut web app, where the committee signs in |
-| Comments, notes, and favorites on photos | Gumnut — the committee can use these while selecting |
+| Browsing and searching the collection | The Gumnut web app, where the team signs in |
+| Comments, notes, and favorites on photos | Gumnut — the team can use these while selecting |
 | Organizing, culling, and grouping photos | Gumnut |
 | Yearbook layout, page design, printing | A separate effort, out of scope here |
 
@@ -99,13 +99,13 @@ After the submission deadline, the page explains that collection is closed and w
 | Not supported | Reason |
 |---|---|
 | See other people's photos | Core privacy commitment |
-| **See their own photos after uploading** | The app is upload-only. Once the confirmation screen is dismissed, there is no gallery, no history, and nothing to come back to. Parents keep their own copies in their camera roll; the committee has theirs. |
+| **See their own photos after uploading** | The app is upload-only. Once the confirmation screen is dismissed, there is no gallery, no history, and nothing to come back to. Parents keep their own copies in their camera roll; the team has theirs. |
 | **Delete a photo after uploading** | **By design, not a v1 shortcut.** Deleting is destructive and irreversible from the parent's side, so it must require *proof that you are the person who uploaded it*. "Same device" is not proof — phones get handed to kids, shared, lent, and resold. Without a real login there is nothing to check, so the app offers no delete at all. Email Kari (§7). |
 | **Edit the name or note after submitting** | Same reasoning. Editing someone else's attribution is a smaller harm than deleting their photo, but it rests on the same unmet identity claim. |
 
 **The principle behind this whole table:** the app performs **no action on a photo after it is uploaded** — not viewing it, not editing it, not deleting it — because it cannot verify who is asking. "Same device" is not proof of identity, and any feature built on it becomes an argument for the next one: a parent who can *see* their past uploads will reasonably ask to delete one. Rather than build that staircase and stop partway up, the app does not take the first step. Upload is a one-way door. If real accounts are ever added, that is the point at which any of this becomes discussable.
 
-**This is the most important thing to communicate to parents,** and the app says it directly: *"Your photos go straight to the yearbook committee. Nobody browsing this site can see them — including you, afterwards. Keep your own copies."*
+**This is the most important thing to communicate to parents,** and the app says it directly: *"Your photos go straight to the yearbook team. Nobody browsing this site can see them — including you, afterwards. Keep your own copies."*
 
 That last clause matters. A parent who assumes the app is also a backup, and later deletes from their phone, has lost something. The confirmation screen should reinforce it (§19.4).
 
@@ -115,15 +115,15 @@ That last clause matters. A parent who assumes the app is also a backup, and lat
 - **No parent-to-parent visibility.** The app never shows one family's photos to another family.
 - **What we collect:** the photos and video clips, the uploader's name as typed, an optional free-text note, and which albums they chose. We do not ask for email, phone, or student names.
 - **Rights attestation.** The upload form has a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook."* Parents frequently upload photos containing other people's children, so this is stated plainly.
-- **Face recognition and naming.** Gumnut automatically detects faces and groups photos of the same person together, and generates a written description of each photo so search works. On top of that, **the committee intends to attach children's names to those face groups.**
+- **Face recognition and naming.** Gumnut automatically detects faces and groups photos of the same person together, and generates a written description of each photo so search works. On top of that, **the team intends to attach children's names to those face groups.**
 
   **Why:** to answer the question every yearbook has to answer — *do we have enough photos of each child?* Without it, checking coverage across hundreds of photos means a volunteer squinting at thumbnails. With it, it is a list.
 
-  In practice: the library holds a **name-to-face index of students**, built by the committee from photos other families contributed. It is visible only to Kari and the volunteers, never published, never shown to other families, and no names appear anywhere in the upload app. Gumnut groups faces; it does not know who anyone is until a person types a name.
+  In practice: the library holds a **name-to-face index of students**, built by the team from photos other families contributed. It is visible only to Kari and the volunteers, never published, never shown to other families, and no names appear anywhere in the upload app. Gumnut groups faces; it does not know who anyone is until a person types a name.
 
 - **The photo release policy, and how naming actually enforces it.** The school's existing photo release policy lets a family ask that their child not appear in the yearbook. Historically that has been close to unenforceable in practice: with hundreds of candid event photos, **there has been no realistic way to know whether a covered child is in a given shot.** Compliance has depended on someone recognizing a face at layout time.
 
-  Naming faces changes that, so the committee will **mark covered children directly in the index — appending a marker such as `(DNR)` to the person's name.** Every photo containing that child then surfaces with the marker attached, and the committee can exclude them reliably rather than hopefully.
+  Naming faces changes that, so the team will **mark covered children directly in the index — appending a marker such as `(DNR)` to the person's name.** Every photo containing that child then surfaces with the marker attached, and the team can exclude them reliably rather than hopefully.
 
   This reframes the whole question. Face naming is not a privacy cost that the release policy has to tolerate — **it is the mechanism that makes the release policy work for the first time.** A family that has asked for their child to be excluded is materially better protected with this system than without it.
 
@@ -131,8 +131,8 @@ That last clause matters. A parent who assumes the app is also a backup, and lat
   - **The names must persist.** Deleting the index when the book ships would discard exactly the information needed to honor the policy on any future use of these photos (§8 retention).
   - **The policy governs the archive, not just the book.** These photos are intended for future use beyond this year's yearbook, so the release policy applies to that future use too — not only to what gets printed in the spring.
 
-  **Action item for the committee (§10):** read the school's photo release policy closely and confirm what it actually covers — yearbook only, or all school publications and archives; whether it is opt-in or opt-out; and how a family registers or changes a preference. The marker convention should match the policy's real terms rather than an assumed version of them.
-- **Retention.** The photos are intended to outlive this year's yearbook and serve as a school archive. **The name index should be kept alongside them, not deleted** — it is what makes the release policy enforceable on any future use, and discarding it would return the school to the position of not knowing who is in which photo. *Open question for the committee:* how long the archive is kept, and who is responsible for it once this year's committee disbands.
+  **Action item for the team (§10):** read the school's photo release policy closely and confirm what it actually covers — yearbook only, or all school publications and archives; whether it is opt-in or opt-out; and how a family registers or changes a preference. The marker convention should match the policy's real terms rather than an assumed version of them.
+- **Retention.** The photos are intended to outlive this year's yearbook and serve as a school archive. **The name index should be kept alongside them, not deleted** — it is what makes the release policy enforceable on any future use, and discarding it would return the school to the position of not knowing who is in which photo. *Open question for the team:* how long the archive is kept, and who is responsible for it once this year's team disbands.
 
 ## 7. Removal requests
 
@@ -165,17 +165,17 @@ For the app to outlive whoever builds it:
 **It matters because hitting the cap fails loudly and all at once.** Gumnut rejects *every* upload with a `507` when the library is full — including duplicates — so the symptom is every parent failing simultaneously, most likely the evening after a big event. Raising the limit fixes it, but only if someone notices. Kari should check remaining capacity after each major event; that is the one recurring operational duty this project has.
 | **Total** | **~$5 / month + storage** | |
 
-## 10. What we need from the school and committee
+## 10. What we need from the school and team
 
 - [ ] **Subdomain decision** and an IT request to point it at the app (e.g. `yearbook.oldmillschool.org`) — or, if the school declines, a PTA-owned domain instead (§8). *Lead time here is the main scheduling risk; the app runs on a temporary address until it resolves.*
 - [ ] **Album list** for the year (e.g. Fall Festival, Field Day, Class Photos, Fifth Grade, Winter Concert…)
 - [ ] **Submission deadline** for the collection window
 - [ ] **Brand inputs:** school colors (hex values), logo file, mascot artwork, and any font or style guidance. *We will not guess these.*
 - [ ] **Approval of the privacy language** in §6
-- [ ] **Read the school's photo release policy closely** (§6) — what it covers (yearbook only, or all publications and the archive), opt-in or opt-out, and how a family registers or changes a preference. **The one item that may need the school office rather than a committee meeting, so start it early.**
+- [ ] **Read the school's photo release policy closely** (§6) — what it covers (yearbook only, or all publications and the archive), opt-in or opt-out, and how a family registers or changes a preference. **The one item that may need the school office rather than a team meeting, so start it early.**
 - [ ] **Agree the marker convention** for covered children (e.g. `(DNR)` appended to the name), matching the policy's actual terms
 - [ ] **Explicit sign-off on naming children's faces** (§6)
-- [ ] **Retention decision** (§6) — how long the archive is kept, and who owns it once this year's committee disbands
+- [ ] **Retention decision** (§6) — how long the archive is kept, and who owns it once this year's team disbands
 - [ ] **Kari's email address** for the site and for removal requests
 
 ## 11. Build order
@@ -188,9 +188,9 @@ Each stage is independently useful and shippable.
 
 **Stage 3 — Deadline handling.** Collection window enforced, with a clear closed-for-the-year page.
 
-**Stage 4 — Handoff.** Abuse protections, documentation, and transfer of account ownership to the committee, so the app can run without its original author.
+**Stage 4 — Handoff.** Abuse protections, documentation, and transfer of account ownership to the team, so the app can run without its original author.
 
-**Later, if wanted:** committee gallery in the app, uploader-initiated deletion, video, real accounts.
+**Later, if wanted:** a team gallery in the app, real parent accounts, and the uploader-initiated deletion those would unlock (§5).
 
 ---
 
@@ -223,7 +223,7 @@ The browser keeps nothing. Once a file is uploaded and confirmed, the app has no
 
 ## 13. Configuration
 
-Everything the committee might change lives in one committed config object. Library and album IDs are not secrets and belong in the public repo.
+Everything the team might change lives in one committed config object. Library and album IDs are not secrets and belong in the public repo.
 
 ```ts
 // src/config.ts
@@ -304,8 +304,8 @@ Accept `image/*` plus explicit `image/heic,image/heif` in the file input so iOS 
 
 Also accept `video/*`. Nothing about the upload path changes — the streaming approach in §14.1 is indifferent to what the bytes are, which is precisely why allowing video is cheap now and would have been expensive under a buffering design.
 
-- Gumnut stores video natively and generates poster frames (`thumbnail_image` / `small_image` / `preview_image`), so clips appear like photos for the committee in Gumnut, with no work on our side.
-- The CDN serves video by passthrough with HTTP Range support, so committee playback seeks properly.
+- Gumnut stores video natively and generates poster frames (`thumbnail_image` / `small_image` / `preview_image`), so clips appear like photos for the team in Gumnut, with no work on our side.
+- The CDN serves video by passthrough with HTTP Range support, so team playback seeks properly.
 - **Enforce the 100 MB cap client-side first**, before the upload starts — `File.size` is known immediately. Failing a 300 MB clip after uploading 100 MB of it over school-parking-lot cellular is a genuinely bad experience. Check server-side too, via `Content-Length`, since the client check is only a courtesy.
 - iPhone clips arrive as HEVC in a `.mov`. These upload and store fine.
 - **No transcoding, client- or server-side.** Browser-side video transcoding (WebCodecs, ffmpeg.wasm) is slow, memory-hungry, and unreliable on exactly the mobile Safari most parents will use. Recorded as a stretch goal against the 100 MB cap; not planned. If clip size becomes a real complaint, the better answer is gap **G3** (direct upload) rather than transcoding on a phone.
@@ -331,13 +331,13 @@ Two consequences:
   Uploaded by: Jane Smith (2026-10-12)
   Notes: Third grade booth, around 2pm
   ```
-- **A photo the committee has trashed will silently "succeed" on re-upload** and return the trashed asset without restoring it. The parent sees success; the photo does not reappear. Acceptable, but the committee should know: trashing is not the same as blocking.
+- **A photo the team has trashed will silently "succeed" on re-upload** and return the trashed asset without restoring it. The parent sees success; the photo does not reappear. Acceptable, but the team should know: trashing is not the same as blocking.
 
 ### 15.2 Signed asset URLs are unguessable but do not expire
 
 `asset_urls` on an asset response are HMAC-SHA256-signed URLs to `assets.gumnut.ai`, served by Gumnut's CDN Worker. The browser can fetch them directly with no API key. They carry **no expiry** — anyone who has the URL can view that image indefinitely.
 
-**The app never hands one of these to a browser** — with no upload history, nothing renders an uploaded photo back to a parent. So this is documented here as context for the committee's own use of Gumnut (a signed URL pasted into an email is a permanent public link to that photo), not as a property this app relies on.
+**The app never hands one of these to a browser** — with no upload history, nothing renders an uploaded photo back to a parent. So this is documented here as context for the team's own use of Gumnut (a signed URL pasted into an email is a permanent public link to that photo), not as a property this app relies on.
 
 ### 15.3 Rate limits are per *account*, shared by every parent
 
@@ -353,7 +353,7 @@ There is no way to set a description or album membership in the create call — 
 
 `POST /api/assets` checks storage limits *first*, so an account at its cap returns **`507 Insufficient Storage` even for a byte-identical duplicate** that would consume no new storage. The Worker should map `507` to a distinct, non-retryable client error with its own copy (§19.7) — retrying makes it worse, and every parent hits it simultaneously. The lead-facing side of this is in §9.
 
-### 15.6 The committee's side is all Gumnut — we build none of it
+### 15.6 The team's side is all Gumnut — we build none of it
 
 Worth knowing when writing the handoff docs, because this is where Kari and the volunteers actually spend their time:
 
@@ -380,7 +380,7 @@ No login means no strong identity, so the goal is raising cost, not perfect prev
 4. **Server-side file validation:** magic-byte check (don't trust `Content-Type` or extension), size cap (D3), and reject anything that isn't a real image.
 5. **Collection window** enforced server-side, not just hidden in the UI.
 
-Deliberately **not** doing: image content moderation, or blocking on ML classification. The committee reviews everything in Gumnut before anything reaches a page, which is the real backstop.
+Deliberately **not** doing: image content moderation, or blocking on ML classification. The team reviews everything in Gumnut before anything reaches a page, which is the real backstop.
 
 ## 17. Gumnut gaps and improvement opportunities
 
@@ -390,14 +390,14 @@ Ordered by how much they'd improve this app.
 
 | # | Gap | Impact here | What would fix it |
 |---|---|---|---|
-| G1 | **No library sharing between users; no roles** — *on Gumnut's near-term roadmap* | Forces the committee onto one shared Gumnut login (D1) in the meantime: no audit trail of who trashed what, and a password that circulates as volunteers turn over. Adopting it later needs no change to this app. | Library membership with viewer/editor roles (planned) |
+| G1 | **No library sharing between users; no roles** — *on Gumnut's near-term roadmap* | Forces the team onto one shared Gumnut login (D1) in the meantime: no audit trail of who trashed what, and a password that circulates as volunteers turn over. Adopting it later needs no change to this app. | Library membership with viewer/editor roles (planned) |
 | G2 | **No write-only API key scope** — `read` is still required alongside `write` | **The app makes zero read calls by design** (§15.1), so it is ready to use a write-only key the moment one exists. Until then its key can read every photo and the named person index (§6) — a compromised Worker secret exposes the whole collection to buy nothing at all. **See the note below: this may already be resolved.** | Allow `actions: ["write"]` without `read` |
 | G3 | **No short-lived, scoped upload tokens** | The Worker must sit in the data path for every byte. A token minted per submission, scoped to one album and a few minutes, would let the browser upload directly to Gumnut — removing the Worker size limits, the concurrency tuning, and most of the rate-limit pressure. **This is the single biggest architectural simplification available.** | Mint-a-scoped-upload-token endpoint |
 | G4 | **No description or album membership at create time** | 3 API calls per photo instead of 1, and three chances to half-succeed. Cheap in rate-limit terms (20 + 1 + 1 tokens, not 3× 20) but it is the main source of partial-failure states in §14. | Optional `description` and `album_ids` on `POST /api/assets` |
-| G5 | **No structured provenance field** | Minor. The user-set `metadata.description` is a separate field from the AI caption, so nothing overwrites the uploader's name — but it is still free text, so "which photos did Jane send?" is not a query the committee can run. | A structured `contributed_by` field, or arbitrary key-value metadata |
-| G6 | **Signed asset URLs never expire and can't be revoked** | The app no longer relies on this, but it affects the committee: a photo URL pasted into an email is a permanent public link to a child's photo, with no way to withdraw it. | Optional expiry and a revocation path |
+| G5 | **No structured provenance field** | Minor. The user-set `metadata.description` is a separate field from the AI caption, so nothing overwrites the uploader's name — but it is still free text, so "which photos did Jane send?" is not a query the team can run. | A structured `contributed_by` field, or arbitrary key-value metadata |
+| G6 | **Signed asset URLs never expire and can't be revoked** | The app no longer relies on this, but it affects the team: a photo URL pasted into an email is a permanent public link to a child's photo, with no way to withdraw it. | Optional expiry and a revocation path |
 | G7 | **Rate limit is per account, not per credential** | All parents share one bucket (§15.3). A per-API-key bucket, or higher limits for ingest, would remove the ceiling. | Per-key rate limit budgets |
-| G8 | **Trashed assets silently absorb re-uploads** | Committee trashes a photo; the same file re-uploaded reports success and vanishes. Confusing for both parent and committee. | Distinguish "matched a trashed asset" in the response |
+| G8 | **Trashed assets silently absorb re-uploads** | Team trashes a photo; the same file re-uploaded reports success and vanishes. Confusing for both parent and team. | Distinguish "matched a trashed asset" in the response |
 
 ## 18. Repository and deployment
 
@@ -432,13 +432,13 @@ This is the list Claude Design should work from. Every state here is reachable i
 1. **Landing / upload form** — school branding, one-sentence explanation, privacy statement inline, uploader name field, comments field, album multi-select (pre-selected from URL params), rights-attestation checkbox, large "Choose photos or videos" target. Mobile-first: most parents arrive from a QR code on a phone.
 2. **Files selected** — thumbnail grid of chosen files with per-file remove, total count and size, Upload button enabled. Video tiles carry a play badge and duration. **Any clip over 100 MB is rejected here, before uploading**, with copy that says what to do (trim it in Photos and re-add) rather than just refusing.
 3. **Uploading** — per-file progress, overall progress, files completing one by one. Must survive slow school-parking-lot cellular gracefully, and must stay legible for a large batch: a parent sending 200 photos should see a sane summary, not 200 progress bars.
-4. **Upload complete** — clear success confirmation, count uploaded, "these are now with the yearbook committee," and an option to send more. **This is the last time the parent sees these photos in the app**, so the confirmation has to carry real weight — this is the screen that has to feel like the photos arrived somewhere safe.
+4. **Upload complete** — clear success confirmation, count uploaded, "these are now with the yearbook team," and an option to send more. **This is the last time the parent sees these photos in the app**, so the confirmation has to carry real weight — this is the screen that has to feel like the photos arrived somewhere safe.
 5. **Partial failure** — some succeeded, some failed, with retry for just the failed ones. Do not lose the successful work.
 6. **Collection closed** — friendly, dated, with Kari's contact.
 7. **Error states** — file too large, unsupported type, invalid or missing access code, rate limited (retrying), network lost, and **storage full** (Gumnut returns `507` when the account is at its cap — see §15.5). The storage-full state needs its own copy: it is not the parent's fault and it tells them to contact Kari rather than retry.
 8. **QR / print page** — for Kari. Generates a printable sheet with a QR code per album, album name, and short URL. Designed to be printed on a home printer and taped to a table.
 
-**Design constraints:** mobile-first; large tap targets; works one-handed; readable outdoors on a phone at a school event; accessible contrast; no reliance on hover. Brand inputs (colors, logo, mascot) are pending from the committee (§10) — build with tokenized placeholders so they drop in cleanly.
+**Design constraints:** mobile-first; large tap targets; works one-handed; readable outdoors on a phone at a school event; accessible contrast; no reliance on hover. Brand inputs (colors, logo, mascot) are pending from the team (§10) — build with tokenized placeholders so they drop in cleanly.
 
 ## 20. Implementation milestones for Claude Code
 
