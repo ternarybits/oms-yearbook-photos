@@ -34,7 +34,7 @@ These are the choices that affect how the yearbook team works, so they are worth
 2. **Get photos to the team already organized.** Photos arrive tagged with who sent them and which event/album they belong to, so the team isn't sorting an undifferentiated pile.
 3. **Protect family privacy by default.** No parent can browse the collection — not other families' photos, and not their own. The app collects; it never displays.
 4. **Be reusable.** The library and album list are configuration, not code, so a future team can point the app at new albums without a developer. How next year is actually structured is deliberately left open (D3).
-5. **Be maintainable by someone other than the person who built it.** Public code repository, documented setup, accounts owned by the school/team rather than an individual.
+5. **Be maintainable by someone other than the person who built it.** Public code repository, documented setup, and accounts owned by an institution rather than an individual — so the maintainer role can pass to any parent with a technical background.
 
 ## 2. Scope and non-goals
 
@@ -65,9 +65,11 @@ Not built at all:
 | **Contributor** | Any parent, family member, or staff member | Uploads photos and clips from a phone or laptop | QR code or link. No login. |
 | **Yearbook lead** | Kari | Owns the collection: creates albums, prints QR codes, reviews what comes in, handles removal requests | Signs into Gumnut (D1) |
 | **Parent volunteers** | Several, assisting the lead | Review and select photos for pages | Signs into Gumnut (D1) |
-| **App maintainer** | TBD | Keeps the site running, adds albums when asked | Cloudflare + GitHub accounts |
+| **App maintainer** | Ted, this year | Keeps the site running, adds albums when asked | Cloudflare + GitHub accounts |
 
 The lead and the volunteers currently **share one Gumnut login** (D1). That is the main practical cost of the shared-account approach: no record of who changed what. It resolves when Gumnut ships per-person library access.
+
+**The maintainer role is meant to be handed off.** Ted holds it this year and may again next year, but the job is deliberately scoped so that **any parent with a technical background can take it over** — add an album to a config file, deploy, occasionally check storage. That constraint is why the stack is small and boring (§12), why nothing depends on its original author, and why the accounts belong to an institution rather than a person (§8). A maintainer who has to understand a clever architecture is a maintainer the project cannot replace.
 
 ## 4. What a parent can do (supported user stories)
 
