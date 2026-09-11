@@ -19,8 +19,11 @@ Planning.
 - **[`docs/PLAN.md`](docs/PLAN.md)** — the full plan, including the technical
   appendix (architecture, upload contract, Gumnut behaviors, milestones).
 
-Both cover the same project; the first is the one to send to someone who is not
-going to build it.
+The full plan includes the September 11 team meeting background and decisions:
+Kari taking over from Roni, the existing Yearbook Avenue workflow, PTA hosting,
+and the district photo-release disclaimer. A [district-policy analysis](docs/DISTRICT-POLICY-ANALYSIS.md)
+records the relevant policies, implications, and remaining evidence gaps. The
+linked team-facing overview has not yet been refreshed with those updates.
 
 ## Stack
 
