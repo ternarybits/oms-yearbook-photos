@@ -15,7 +15,7 @@
 
 ---
 
-## Background and decisions from the September 11 team meeting
+## Background from the September 11 team meeting
 
 ### How the yearbook has worked
 
@@ -23,32 +23,13 @@ Roni has been the Yearbook Lead for the past seven years. Kari is taking over th
 
 Roni collected photos onto her phone in an ad-hoc way: families emailed and texted photos or shared Apple Photos and Google Photos albums. She then uploaded them to [Jostens Yearbook Avenue](https://yearbookavenue.jostens.com/), the yearbook management system she has been using. There she organized photos into albums by event, photo submitter, and whatever other groupings helped her work.
 
-Student names are pre-populated in Yearbook Avenue, but each photo needs to be manually tagged with the students who appear in it. Roni knew most of the students and did all of that tagging herself. Student identification and tagging are outside the scope of this plan. One hypothesis is to import the school yearbook photos, which are already clearly tagged with each child's name, grade, and teacher. This is a possibility to explore outside this plan, not a committed import or tagging feature.
+Student names are pre-populated in Yearbook Avenue, but each photo needs to be manually tagged with the students who appear in it. Roni knew most of the students and did all of that tagging herself. This year, the team will try Gumnut's face detection and tagging capabilities to automatically tag students in the photos they appear in. The proposed starting point is one labeled school yearbook photo for every student, with each child's name, grade, and teacher, to bootstrap identification across the collection. Whether one labeled photo per student is sufficient remains a hypothesis to validate in Gumnut. This is an intended use of Gumnut by the team; building custom student-identification, import, or tagging functionality in the upload app remains outside this plan.
 
 As reported in the meeting, Yearbook Avenue supports cropping and resizing, but not other photo editing. Roni rarely edited photos; when she did, she edited them on her phone outside Yearbook Avenue and uploaded the edited versions again. These are descriptions of the team's existing workflow, not a new requirement to build editing into the upload app.
 
-### Decisions recorded
-
-- **The PTA is responsible for the yearbook.** The upload page will have a home on the PTA's site/domain, likely `yearbook.oldmillpta.org`. Ted will handle the exact subdomain and DNS setup outside the scope of this plan.
-- **Temporary hosting:** use an assigned Cloudflare Worker URL (`*.workers.dev`) until the PTA subdomain is ready.
-- **District-policy disclaimer:** the team agreed to add a disclaimer on the upload page saying that uploaded photos are covered by the school district's photo release policy. Draft wording and policy-analysis status are in §6.
-
-Historically, the team has given limited attention to data privacy. The disclaimer is this year's agreed step; it does not establish what the policy permits or demonstrate compliance. The relevant policies in the [Mill Valley School District Board Policy Manual](https://simbli.eboardsolutions.com/Policy/PolicyListing.aspx?S=36030331) have been reviewed. Findings, source links, and remaining evidence gaps are in [the district-policy analysis](DISTRICT-POLICY-ANALYSIS.md), summarized in §6.
+Historically, the team has given limited attention to data privacy. The team agreed to add an upload-page disclaimer referring to the district's photo-release policy (§6); the disclaimer does not establish what the policy permits or demonstrate compliance. The relevant policies in the [Mill Valley School District Board Policy Manual](https://simbli.eboardsolutions.com/Policy/PolicyListing.aspx?S=36030331) have been reviewed. Findings, source links, and remaining evidence gaps are in [the district-policy analysis](DISTRICT-POLICY-ANALYSIS.md), summarized in §6.
 
 The upload app remains the proposed central collection point, with Gumnut for review and organization and a file export to Yearbook Avenue for production. No automated integration or transfer of student tags into Yearbook Avenue has been agreed.
-
----
-
-## Decisions to confirm before building
-
-These are the choices that affect how the yearbook team works, so they are worth confirming before building. Purely technical decisions — file size limits, how uploads are handled — are settled and live in Part 2.
-
-| # | Decision | What it means for the team |
-|---|---|---|
-| **D1** | **The team shares one Gumnut login** to review photos | Everyone uses the same username and password for now, so there is no record of who did what. Gumnut is adding per-person logins soon; when it arrives, each team member gets their own and nothing about the app changes. |
-| **D2** | **Each way of sharing the link gets its own access code** | The code is built into the QR codes and newsletter links, so nobody ever types it. Giving the posters, the newsletter, and each class parent a different code means one can be switched off without disrupting the others — useful if a link ends up somewhere it shouldn't. |
-| **D3** | **Next school year is not being designed yet** | Albums and storage are settings, not code, so whether next year reuses this library or starts a fresh one can be decided when it arrives rather than guessed at now. |
-| **D4** | **What happens to the photos after the yearbook is printed** | Submissions are for yearbook consideration only. Decide the retention period and responsible owner, subject to applicable record-retention obligations (§6), and disclose the decision before collection. Do not assume the whole library can be deleted immediately after printing. This is the decision that is hardest to revisit later, so it is worth settling first. See §6. |
 
 ---
 
@@ -59,7 +40,7 @@ These are the choices that affect how the yearbook team works, so they are worth
 1. **Make it effortless to contribute photos.** Scan a QR code at a school event, pick photos from the camera roll, tap upload. No account, no password, no app to install.
 2. **Get photos to the team already organized.** Photos arrive tagged with who sent them and which event/album they belong to, so the team isn't sorting an undifferentiated pile.
 3. **Protect family privacy by default.** No parent can browse the collection — not other families' photos, and not their own. The app collects; it never displays.
-4. **Be reusable.** The library and album list are configuration, not code, so a future team can point the app at new albums without a developer. How next year is actually structured is deliberately left open (D3).
+4. **Be reusable.** The library and album list are configuration, not code, so a future team can point the app at new albums without a developer. How next year is actually structured is deliberately left open (§13).
 5. **Be maintainable by someone other than the person who built it.** Public code repository, documented setup, and accounts owned by an institution rather than an individual — so the maintainer role can pass to any parent with a technical background.
 
 ## 2. Scope and non-goals
@@ -82,18 +63,18 @@ Not built at all:
 - **Any destructive action from the upload app** — no delete, no edit, no overwrite, for anyone. See §5 for the reasoning; it is a design principle, not a missing feature.
 - **Any use of the photos outside the yearbook.** Uploading a photo puts it in front of the yearbook team for possible inclusion in the book. It is not permission to use it in the newsletter, on the school website, in fundraising materials, or anywhere else. A broader use would have to be asked for separately (§6).
 
-**Getting the photos back out** is already handled: Gumnut can download a whole album, or any selection, as a single ZIP of originals — from the web app, or via the API. So when it is time to lay out pages, the yearbook team exports the album and uploads the selected files to Yearbook Avenue. Student identification, tagging, and any transfer of tags are outside this plan; no transfer capability is assumed. See §15.6.
+**Getting the photos back out** is already handled: Gumnut can download a whole album, or any selection, as a single ZIP of originals — from the web app, or via the API. So when it is time to lay out pages, the yearbook team exports the album and uploads the selected files to Yearbook Avenue. The team will try student tagging in Gumnut (§15.6); transfer of those tags to Yearbook Avenue is not established or included in the upload app. See §15.6.
 
 ## 3. Who uses this
 
 | Role | Who | What they do | How they access it |
 |---|---|---|---|
 | **Contributor** | Any parent, family member, or staff member | Uploads photos and clips from a phone or laptop | QR code or link. No login. |
-| **Yearbook lead** | Kari | Owns the collection: creates albums, prints QR codes, reviews what comes in, handles removal requests | Signs into Gumnut (D1) |
-| **Parent volunteers** | Several, assisting the lead | Review and select photos for pages | Signs into Gumnut (D1) |
+| **Yearbook lead** | Kari | Owns the collection: creates albums, prints QR codes, reviews what comes in, handles removal requests | Signs into Gumnut |
+| **Parent volunteers** | Several, assisting the lead | Manage, review, and select photos once library sharing is available; Kari manages photos in the meantime | Separate Gumnut logins once sharing is available |
 | **App maintainer** | Ted, this year | Keeps the site running, adds albums when asked | Cloudflare + GitHub accounts |
 
-The lead and the volunteers currently **share one Gumnut login** (D1). That is the main practical cost of the shared-account approach: no record of who changed what. It resolves when Gumnut ships per-person library access.
+**Kari will manage uploaded photos for now, using her own Gumnut login.** Once Gumnut supports library sharing, each team member will use a separate login to manage the collection. Kari's credentials will not be shared with volunteers.
 
 **The maintainer role is meant to be handed off.** Ted holds it this year and may again next year, but the job is deliberately scoped so that **any parent with a technical background can take it over** — add an album to a config file, deploy, occasionally check storage. That constraint is why the stack is small and boring (§12), why nothing depends on its original author, and why the accounts belong to an institution rather than a person (§8). A maintainer who has to understand a clever architecture is a maintainer the project cannot replace.
 
@@ -102,8 +83,10 @@ The lead and the volunteers currently **share one Gumnut login** (D1). That is t
 **S1 — Upload photos and clips from an event.**
 A parent scans the QR code posted at the Lapathon. The page opens already knowing the upload is for the Lapathon album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third graders on the back stretch, ~2pm"), check the rights box, and tap Upload. A progress indicator shows each file completing, and the page confirms how many went through.
 
+**Upload links:** each distribution channel gets a distinct access code embedded in its links and QR codes—for example, posters, the newsletter, and each class parent. Contributors do not type codes. A channel's code can be revoked without disabling the others (§16).
+
 **S2 — Upload without a QR code.**
-A parent follows the link from the school newsletter or a class-parent email. That link carries the same access code the QR codes use, so the form opens normally — they just choose which album(s) apply from the published list rather than having one pre-selected. Someone who types the bare subdomain with no link sees a short page explaining where to get the link (newsletter, class parent, or the yearbook lead's email) rather than an error.
+A parent follows the link from the school newsletter or a class-parent email. That link carries its distribution channel's access code, so the form opens normally — they just choose which album(s) apply from the published list rather than having one pre-selected. Someone who types the bare subdomain with no link sees a short page explaining where to get the link (newsletter, class parent, or the yearbook lead's email) rather than an error.
 
 **S3 — Put one batch into more than one album.**
 Photos from a single afternoon that belong in both "Field Day" and "Fifth Grade" are added to both, in one submission.
@@ -153,7 +136,7 @@ The rest of this section covers only what is **specific to this app and this pro
 
 - **District-policy review completed September 11.** See [District policy analysis](DISTRICT-POLICY-ANALYSIS.md) for the relevant BP/AR provisions, revision dates, source links, and evidence gaps. The manual contains directory-information, website, student-record, PTA, volunteer, retention, and AI rules; the review has not established a single release that automatically authorizes every yearbook submission or use.
 
-- **Disclaimer decision retained; wording clarified.** Proposed upload-page text for review:
+- **Upload-page disclaimer.** Proposed upload-page text for review:
 
   > Photos and videos submitted here are for consideration in the Old Mill School yearbook. Their use is subject to applicable Mill Valley School District photo-release permissions and privacy policies. Uploading does not override a family's release restrictions. Submissions go to the PTA yearbook team for private review and are not displayed on this site.
 
@@ -161,11 +144,12 @@ The rest of this section covers only what is **specific to this app and this pro
 
 - **Collection and publication are different.** BP/AR 5125.1 governs district directory-information release, annual notice, and written opt outs. BP 1113 requires prior written consent for an individual student's photo accompanied by their name or other personally identifying information on district/school websites. Neither establishes the exact printed-yearbook permission for this project. The app stays upload-only; private review does not authorize later public sharing. The actual family release form and its yearbook scope remain to be confirmed.
 
-- **PTA ownership does not settle student-record status.** BP/AR 1230 treats the PTA as a separate school-connected organization. If the collection is maintained for the district, BP/AR 5125 student-record access and third-party contract requirements may apply to its storage and processing. Confirm the existing authority, record classification, and applicable agreements for the Cloudflare → Gumnut → Yearbook Avenue data path. This is an unresolved applicability question, not a finding that these vendors are prohibited or approved. The shared login in D1 remains a proposal; it provides no per-person audit trail and should be assessed against applicable access requirements.
+- **PTA ownership does not settle student-record status.** BP/AR 1230 treats the PTA as a separate school-connected organization. If the collection is maintained for the district, BP/AR 5125 student-record access and third-party contract requirements may apply to its storage and processing. Confirm the existing authority, record classification, and applicable agreements for the Cloudflare → Gumnut → Yearbook Avenue data path. This is an unresolved applicability question, not a finding that these vendors are prohibited or approved. As described in §3, Kari manages photos initially and each team member will have a separate login once library sharing is available; credentials will not be shared.
 
-- **Automated processing.** BP 0441's AI privacy and accountability principles are relevant to Gumnut's proposed face grouping. This review does not establish approved processing or vendor terms, and it does not impose a new no-AI design. The portrait-import hypothesis and student-tagging procedures remain outside this plan.
+- **Automated processing.** BP 0441's AI privacy and accountability principles are relevant to Gumnut's proposed face grouping. This review does not establish approved processing or vendor terms, and it does not impose a new no-AI design. The team intends to try Gumnut tagging, bootstrapped with one labeled school photo per student (§15.6). That experiment does not establish district permission for the source photos or processing; custom import and tagging functionality remains outside the upload app.
 
-- **Retention remains a decision, subject to applicable rules.** Yearbook consideration is the stated project purpose. Choose a defined retention period and responsible owner and disclose them before collection. If the collection is district records, AR 3580 and AR 5125 classification/retention requirements may limit when it can be destroyed. The reviewed policies do not specify a universal deletion date for yearbook submissions. Consider originals, derived media, exports, and provider copies when settling the schedule; deleting from Gumnut does not establish deletion from Yearbook Avenue or downloaded files.
+- **Historical retention practice.** Jostens and Roni have kept copies of all photos ever uploaded, with no defined end date. Indefinite retention has not previously been raised as a problem. The team may revisit it, but this plan does not impose a new deletion schedule or make a retention redesign a prerequisite to building. The reviewed district policies specify no yearbook-specific retention duration or maximum. AR 3580 and AR 5125 contain general district-record rules whose applicability depends on the collection's status; that is distinct from a policy requiring yearbook photos to be deleted after printing. Describe the intended retention practice accurately in the upload-page privacy language. Any later change should account for copies in Gumnut, Yearbook Avenue, and downloaded files.
+
 
 ## 7. Removal requests
 
@@ -182,7 +166,7 @@ For the app to outlive whoever builds it:
 - Credentials live in a password manager the owning body controls.
 - The code is public on GitHub. Secrets are never in the code.
 - A `README` documents how to change what the app collects into: create an album in Gumnut, add it to the config file, deploy, print a QR code. That is the whole recurring operation.
-- The runbook names **who watches remaining photo storage** (§9). Student identification and tagging procedures are outside this plan.
+- The runbook names **who watches remaining photo storage** (§9). The Gumnut tagging experiment is described in §15.6; custom import and tagging tools are outside this plan.
 
 ## 9. Costs
 
@@ -209,7 +193,6 @@ For the app to outlive whoever builds it:
 - [ ] **Finalize disclaimer wording and policy link** — review the proposed sentence in §6 alongside the rights attestation.
 - [x] **District-policy analysis completed** (§6) — [findings and evidence gaps](DISTRICT-POLICY-ANALYSIS.md).
 - [ ] **Resolve policy applicability and release evidence** — actual family photo/yearbook release, existing PTA/yearbook authority and record classification, applicable provider/access requirements, and permitted automated processing. The policy text alone does not establish these facts; this does not add communication, tagging, or DNS work to the plan.
-- [ ] **Retention decision** (§6) — **choose a retention period consistent with the collection's record classification and applicable obligations.** The yearbook-only purpose, any continued need, responsible owner, and retention period must be reflected on the upload page *before* collection starts. Decide this early; it is much harder to add after the fact.
 - [ ] **The yearbook lead's email address** for the site and for removal requests
 
 ## 11. Build order
@@ -285,7 +268,7 @@ export const CONFIG = {
 } as const;
 ```
 
-**On future years (D3):** deliberately not designed now. Adding albums to this same library is an edit to `albums`. Moving to a separate library per year is an edit to `libraryId` plus a re-scoped API key. Both stay available because nothing outside this file knows the year. Do not build multi-year machinery until someone actually needs it.
+**On future years:** deliberately not designed now. Adding albums to this same library is an edit to `albums`. Moving to a separate library per year is an edit to `libraryId` plus a re-scoped API key. Both stay available because nothing outside this file knows the year. Do not build multi-year machinery until someone actually needs it.
 
 **QR / deep links** use slugs, never raw Gumnut IDs:
 `https://yearbook.oldmillpta.org/?a=field-day,fifth-grade&c=<access-code>`
@@ -403,9 +386,9 @@ There is no way to set a description or album membership in the create call — 
 Worth knowing when writing the handoff docs, because this is where the yearbook team actually spends its time:
 
 - **Browse, search, and view** the collection, including video playback with seeking.
-- **People features (context only; identification and tagging are out of scope).** Gumnut detects and groups faces automatically. The school-photo import hypothesis is recorded in the meeting background; no import implementation or tagging procedure is required by this plan. Potential uses include:
+- **Student tagging in Gumnut — intended team experiment.** The team will try Gumnut's face detection and tagging to automatically tag students across the submitted photos. Start with one labeled school yearbook photo for every student, carrying their name, grade, and teacher, and test whether this can bootstrap identification of the same students in other photos. The effectiveness of this approach remains to be validated; one reference photo per student is not a guarantee of complete or accurate tagging. This uses Gumnut's capabilities and does not add a custom import or tagging feature to the upload app. Intended uses include:
   - **Coverage.** *Do we have enough photos of each child?* is a list rather than a squint through thumbnails.
-  - **Release-policy handling (§6), subject to the applicable permissions.** A marker such as `(DNR)` is a proposed review aid, not an agreed compliance mechanism. The team must verify identities and applicable release preferences before selecting photos; missed or incorrect face tags remain possible. The policy analysis identifies applicable rules and remaining evidence gaps; the team's identification and tagging procedures remain outside this plan.
+  - **Release-policy handling (§6), subject to the applicable permissions.** A marker such as `(DNR)` is a proposed review aid, not an agreed compliance mechanism. The team must verify identities and applicable release preferences before selecting photos; missed or incorrect face tags remain possible. The policy analysis identifies applicable rules and remaining evidence gaps; detailed tagging procedures and custom tooling remain outside this plan.
 - **Bulk download** — select any set of photos, or a whole album, and download them as a ZIP of originals. Available in the Gumnut web app and through the API. (Mechanically the zipping happens in the browser rather than on a server, which makes no difference to how it is used.)
 - **Trash** — soft delete, recoverable for 90 days, which is the safety net behind removal requests (§7).
 
@@ -439,7 +422,7 @@ Ordered by how much they'd improve this app.
 
 | # | Gap | Impact here | What would fix it |
 |---|---|---|---|
-| G1 | **No library sharing between users; no roles** — *on Gumnut's near-term roadmap* | Forces the team onto one shared Gumnut login (D1) in the meantime: no audit trail of who trashed what, and a password that circulates as volunteers turn over. Adopting it later needs no change to this app. | Library membership with viewer/editor roles (planned) |
+| G1 | **No library sharing between users; no roles** — *on Gumnut's near-term roadmap* | Kari manages the collection alone until sharing is available. Each team member will then use a separate login; no shared credentials are planned. Adopting sharing later needs no change to this upload app. | Library membership with viewer/editor roles (planned) |
 | G2 | **No write-only API key scope** — `read` is still required alongside `write` | **The app makes zero read calls by design** (§15.1), so it is ready to use a write-only key the moment one exists. Until then its key can read every photo and every person tag (§15.6) — a compromised Worker secret exposes the whole collection to buy nothing at all. **See the note above: this may already be resolved.** | Allow `actions: ["write"]` without `read` |
 | G3 | **No short-lived, scoped upload tokens** | The Worker must sit in the data path for every byte. A token minted per submission, scoped to one album and a few minutes, would let the browser upload directly to Gumnut — removing the Worker size limits, the concurrency tuning, and most of the rate-limit pressure. **This is the single biggest architectural simplification available.** | Mint-a-scoped-upload-token endpoint |
 | G4 | **No description or album membership at create time** | 3 API calls per photo instead of 1, and three chances to half-succeed. Cheap in rate-limit terms (20 + 1 + 1 tokens, not 3× 20) but it is the main source of partial-failure states in §14. | Optional `description` and `album_ids` on `POST /api/assets` |
