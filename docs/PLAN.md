@@ -3,7 +3,7 @@
 **Status:** Draft for team review
 **Author:** Ted
 **Date:** 2026-09-04
-**Updated:** 2026-09-11 — yearbook team meeting
+**Updated:** 2026-09-11 — yearbook team meeting; submission deadlines and rights checkbox removed
 
 ---
 
@@ -60,6 +60,7 @@ Not built at all:
 
 - **A public gallery.** There is no page, anywhere, where one family can see another family's photos.
 - **Parent accounts or logins.** Contributing takes no sign-in.
+- **Submission deadlines.** The app does not enforce a collection window or provide a closed-for-the-year page.
 - **Any destructive action from the upload app** — no delete, no edit, no overwrite, for anyone. See §5 for the reasoning; it is a design principle, not a missing feature.
 - **Any use of the photos outside the yearbook.** Uploading a photo puts it in front of the yearbook team for possible inclusion in the book. It is not permission to use it in the newsletter, on the school website, in fundraising materials, or anywhere else. A broader use would have to be asked for separately (§6).
 
@@ -81,7 +82,7 @@ Not built at all:
 ## 4. What a contributor can do (supported user stories)
 
 **S1 — Upload photos and clips from an event.**
-A parent scans the QR code posted at the Lapathon. The page opens already knowing the upload is for the Lapathon album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third graders on the back stretch, ~2pm"), check the rights box, and tap Upload. A progress indicator shows each file completing, and the page confirms how many went through.
+A parent scans the QR code posted at the Lapathon. The page opens already knowing the upload is for the Lapathon album. They tap "Choose photos or videos," select 12 photos and a short clip from their camera roll, type their name, add a note ("Third graders on the back stretch, ~2pm"), read the rights statement above the button, and tap Upload. A progress indicator shows each file completing, and the page confirms how many went through.
 
 **Upload links:** each distribution channel gets a distinct access code embedded in its links and QR codes—for example, posters, the newsletter, and each class parent. Contributors do not type codes. A channel's code can be revoked without disabling the others (§16).
 
@@ -99,9 +100,6 @@ Plain-language privacy text is on the upload page itself, not buried in a link, 
 
 **S6 — Send more photos later, from any device.**
 A parent can come back as many times as they like, from a phone or a laptop, with no login and nothing to remember. Each visit is a fresh submission. Sending the same photo twice is harmless — Gumnut keeps one copy (§15.1).
-
-**S7 — Get a clear answer when the window has closed.**
-After the submission deadline, the page explains that collection is closed and who to contact.
 
 ## 5. What a contributor cannot do, and why
 
@@ -129,8 +127,8 @@ The rest of this section covers only what is **specific to this app and this pro
 - **Nothing is public.** There is no public gallery, and no page anywhere that displays the collection.
 - **No parent-to-parent visibility.** The app never shows one family's photos to another family. It never shows a contributor their own photos either — it collects and does not display (§5).
 - **What the app asks for:** the photos and clips, the uploader's name as typed, an optional note, and which albums they chose. It does not ask for email, phone number, or student names.
-- **Rights attestation.** The upload form carries a required checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook."* Contributors routinely upload photos containing other people's children, so this is stated plainly rather than buried. The exact wording needs the team's sign-off (§10).
-- **What uploading does *not* grant.** The scope of that checkbox is deliberately narrow, and the rest of the project has to respect it. Uploading a photo stores it so the yearbook team can consider it for the book. It is **not** consent to use it in any other school material — not the newsletter, not the website, not fundraising, not social media. A parent handing over candid shots of other people's children for a yearbook should not thereby be granting the school an open-ended license, and if a broader use is ever wanted, the right move is to ask for it then rather than to have quietly collected it now.
+- **Rights statement.** The upload form displays this text above the Upload button, with no checkbox: *"I have the right to share these photos, and I understand they may appear in the school yearbook."* Contributors routinely upload photos containing other people's children, so this is stated plainly rather than buried. The exact wording needs the team's sign-off (§10).
+- **What uploading does *not* grant.** The scope of that statement is deliberately narrow, and the rest of the project has to respect it. Uploading a photo stores it so the yearbook team can consider it for the book. It is **not** consent to use it in any other school material — not the newsletter, not the website, not fundraising, not social media. A parent handing over candid shots of other people's children for a yearbook should not thereby be granting the school an open-ended license, and if a broader use is ever wanted, the right move is to ask for it then rather than to have quietly collected it now.
 
 ### Specific to this project
 
@@ -140,7 +138,7 @@ The rest of this section covers only what is **specific to this app and this pro
 
   > Photos and videos submitted here are for consideration in the Old Mill School yearbook. Their use is subject to applicable Mill Valley School District photo-release permissions and privacy policies. Uploading does not override a family's release restrictions. Submissions go to the PTA yearbook team for private review and are not displayed on this site.
 
-  Link “privacy policies” to the [district policy manual](https://simbli.eboardsolutions.com/Policy/PolicyListing.aspx?S=36030331), and add the actual family photo-release form when obtained. Keep the uploader's rights checkbox separate: it does not grant permission on behalf of every pictured child's parent or replace district notice/consent requirements.
+  Link “privacy policies” to the [district policy manual](https://simbli.eboardsolutions.com/Policy/PolicyListing.aspx?S=36030331), and add the actual family photo-release form when obtained. Keep the uploader's rights statement separate: it does not grant permission on behalf of every pictured child's parent or replace district notice/consent requirements.
 
 - **Collection and publication are different.** BP/AR 5125.1 governs district directory-information release, annual notice, and written opt outs. BP 1113 requires prior written consent for an individual student's photo accompanied by their name or other personally identifying information on district/school websites. Neither establishes the exact printed-yearbook permission for this project. The app stays upload-only; private review does not authorize later public sharing. The actual family release form and its yearbook scope remain to be confirmed.
 
@@ -186,11 +184,10 @@ For the app to outlive whoever builds it:
 
 - [x] **PTA domain direction and temporary hosting agreed September 11** — PTA home, likely `yearbook.oldmillpta.org`; assigned `*.workers.dev` URL until ready (§8).
 - [ ] **Album list** for the year (e.g. Lapathon, Field Day, Class Photos, Fifth Grade, Winter Concert…)
-- [ ] **Submission deadline** for the collection window
 - [ ] **Brand inputs:** school colors (hex values), logo file, mascot artwork, and any font or style guidance. *We will not guess these.*
-- [ ] **Approval of the app's privacy language** in §6, and specifically the **wording of the rights-attestation checkbox** — it is the one sentence contributors actually agree to, and it is deliberately scoped to the yearbook alone
+- [ ] **Approval of the app's privacy language** in §6, and specifically the **wording of the rights statement above the Upload button** — it is deliberately scoped to the yearbook alone and does not require a checkbox
 - [x] **Upload-page district-policy disclaimer agreed September 11** (§6).
-- [ ] **Finalize disclaimer wording and policy link** — review the proposed sentence in §6 alongside the rights attestation.
+- [ ] **Finalize disclaimer wording and policy link** — review the proposed sentence in §6 alongside the rights statement.
 - [x] **District-policy analysis completed** (§6) — [findings and evidence gaps](DISTRICT-POLICY-ANALYSIS.md).
 - [ ] **Resolve policy applicability and release evidence** — actual family photo/yearbook release, existing PTA/yearbook authority and record classification, applicable provider/access requirements, and permitted automated processing. The policy text alone does not establish these facts; this does not add communication, tagging, or DNS work to the plan.
 - [ ] **The yearbook lead's email address** for the site and for removal requests
@@ -199,13 +196,11 @@ For the app to outlive whoever builds it:
 
 Each stage is independently useful and shippable.
 
-**Stage 1 — Upload works.** Themed page, photo picker, name + note fields, rights checkbox, uploads land in one Gumnut album. Privacy text and the agreed district-policy disclaimer (§6). Access code and collection window enforced from the start — both are a few lines each (§16), and Stage 1 is already collecting real photos of real children at a public URL, so it should not run wide open while the rest is built. Deployed to a temporary address. *This completes the technical intake path; use with real student photos also depends on resolving the applicable release and data-handling questions in §6.*
+**Stage 1 — Upload works.** Themed page, photo picker, name + note fields, rights statement above the Upload button, uploads land in one Gumnut album. Privacy text and the agreed district-policy disclaimer (§6). Access code enforced from the start (§16), and Stage 1 is already collecting real photos of real children at a public URL, so it should not run wide open while the rest is built. Deployed to a temporary address. *This completes the technical intake path; use with real student photos also depends on resolving the applicable release and data-handling questions in §6.*
 
 **Stage 2 — Albums and QR codes.** Multi-select album list, QR links that pre-select an album, a printable QR sheet for the yearbook lead. Use the PTA subdomain when Ted has set it up outside this plan; that setup is not a milestone requirement.
 
-**Stage 3 — Deadline handling.** Collection window enforced, with a clear closed-for-the-year page.
-
-**Stage 4 — Handoff.** The remaining abuse protections (Turnstile, rate limiting), documentation, and transfer of account ownership to the team, so the app can run without its original author.
+**Stage 3 — Handoff.** The remaining abuse protections (Turnstile, rate limiting), documentation, and transfer of account ownership to the team, so the app can run without its original author.
 
 **Later, if wanted:** a team gallery in the app, real parent accounts, and the uploader-initiated deletion those would unlock (§5).
 
@@ -220,7 +215,7 @@ Contributor's browser           Cloudflare Worker              Gumnut
 ─────────────────────           ─────────────────              ──────
 static page + JS   ──POST──▶    /api/upload
  (one file per      raw bytes    ├─ check access code hash
-  request, 2–3      as the body  ├─ check collection window
+  request, 2–3      as the body
   concurrent)       + headers    ├─ verify Turnstile token
                                  ├─ check magic bytes, size, type
                                  ├─ stream body ───────────────▶ POST /api/assets
@@ -250,7 +245,6 @@ Everything the team might change lives in one committed config object. Library a
 export const CONFIG = {
   displayName: "Old Mill School Yearbook",
   libraryId: "lib_...",
-  closesAt: "2027-03-15T23:59:59-07:00",
   contactEmail: "yearbook@oldmillpta.org",
   albums: [
     { slug: "lapathon",      name: "Lapathon",      albumId: "album_..." },
@@ -379,7 +373,7 @@ There is no way to set a description or album membership in the create call — 
 
 ### 15.5 Storage cap returns 507, checked before deduplication
 
-`POST /api/assets` checks storage limits *first*, so an account at its cap returns **`507 Insufficient Storage` even for a byte-identical duplicate** that would consume no new storage. The Worker should map `507` to a distinct, non-retryable client error with its own copy (§19.7) — retrying makes it worse, and every parent hits it simultaneously. The lead-facing side of this is in §9.
+`POST /api/assets` checks storage limits *first*, so an account at its cap returns **`507 Insufficient Storage` even for a byte-identical duplicate** that would consume no new storage. The Worker should map `507` to a distinct, non-retryable client error with its own copy (§19.6) — retrying makes it worse, and every parent hits it simultaneously. The lead-facing side of this is in §9.
 
 ### 15.6 Gumnut review and export — we build none of it
 
@@ -410,7 +404,6 @@ No login means no strong identity, so the goal is raising cost, not perfect prev
 
    Both numbers need to clear the legitimate cases, or the limit becomes the bug. S4 describes a parent sending 200 photos in one sitting and §14 describes 300 from an event, so any per-device daily cap below ~500 would reject exactly the user we designed for. The per-IP rule is worse: at an indoor event on the school's guest Wi-Fi, *every* parent shares one egress IP, so a daily per-IP cap would cut off the whole gym partway through the Winter Concert. A per-minute burst limit still stops a script while leaving a crowd of real parents alone.
 4. **Server-side file validation:** magic-byte check (don't trust `Content-Type` or extension), size cap (§14.1), and reject anything that isn't a real image or video.
-5. **Collection window** enforced server-side, not just hidden in the UI.
 
 Deliberately **not** doing: image content moderation, or blocking on ML classification. The team reviews everything in Gumnut before anything reaches a page, which is the real backstop.
 
@@ -442,7 +435,7 @@ oms-yearbook-photos/          # public GitHub repo, NOT under the gumnut org
 ├── wrangler.toml
 ├── src/
 │   ├── index.ts              # Worker: routes + static assets
-│   ├── config.ts             # library, albums, deadline (committed, no secrets)
+│   ├── config.ts             # library, albums, access-code hashes (no secrets)
 │   ├── upload.ts             # upload handler
 │   └── client/               # frontend
 └── .github/workflows/deploy.yml
@@ -465,24 +458,23 @@ Access codes are deliberately **not** secrets: only their hashes are committed (
 
 This is the list Claude Design should work from. Every state here is reachable in the real app.
 
-1. **Landing / upload form** — school branding, one-sentence explanation, the app's short privacy statement and district photo-release disclaimer inline, with links to Gumnut's full policy and the district policy manual (§6), uploader name field, comments field, album multi-select (pre-selected from URL params), rights-attestation checkbox, large "Choose photos or videos" target. Mobile-first: most parents arrive from a QR code on a phone.
+1. **Landing / upload form** — school branding, one-sentence explanation, the app's short privacy statement and district photo-release disclaimer inline, with links to Gumnut's full policy and the district policy manual (§6), uploader name field, comments field, album multi-select (pre-selected from URL params), rights statement above the Upload button, large "Choose photos or videos" target. Mobile-first: most parents arrive from a QR code on a phone.
 2. **Files selected** — thumbnail grid of chosen files with per-file remove, total count and size, Upload button enabled. Video tiles carry a play badge and duration. **Any clip over 100 MB is rejected here, before uploading**, with copy that says what to do (trim it in Photos and re-add) rather than just refusing.
 3. **Uploading** — per-file progress, overall progress, files completing one by one. Must survive slow school-parking-lot cellular gracefully, and must stay legible for a large batch: a parent sending 200 photos should see a sane summary, not 200 progress bars.
 4. **Upload complete** — success shown in place, not on a separate screen: the count that went through, "these are now with the yearbook team," and an easy way to send more.
 5. **Partial failure** — some succeeded, some failed, with retry for just the failed ones. Do not lose the successful work.
-6. **Collection closed** — friendly, dated, with the yearbook lead's contact.
-7. **Error states** — file too large, unsupported type, invalid or missing access code, rate limited (retrying), network lost, and **storage full** (Gumnut returns `507` when the account is at its cap — see §15.5). The storage-full state needs its own copy: it is not the parent's fault and it tells them to contact the yearbook lead rather than retry.
-8. **QR / print page** — for the yearbook lead. Generates a printable sheet with a QR code per album, album name, and short URL. Designed to be printed on a home printer and taped to a table.
+6. **Error states** — file too large, unsupported type, invalid or missing access code, rate limited (retrying), network lost, and **storage full** (Gumnut returns `507` when the account is at its cap — see §15.5). The storage-full state needs its own copy: it is not the parent's fault and it tells them to contact the yearbook lead rather than retry.
+7. **QR / print page** — for the yearbook lead. Generates a printable sheet with a QR code per album, album name, and short URL. Designed to be printed on a home printer and taped to a table.
 
 **Design constraints:** mobile-first; large tap targets; works one-handed; readable outdoors on a phone at a school event; accessible contrast; no reliance on hover. Brand inputs (colors, logo, mascot) are pending from the team (§10) — build with tokenized placeholders so they drop in cleanly.
 
 ## 20. Implementation milestones for Claude Code
 
-**M1 — Upload path.** Worker + static page. One album, hard-coded. Name, comments, rights checkbox, privacy text, and district-policy disclaimer (§6). Single-file-per-request **streaming** upload with concurrency pool. Magic-byte validation, size cap, header-field length limits. Stream to `POST /api/assets` → `updateAsset` → album add, with duplicate handling per §15.1 (description written only on 201). Access-code hash check and collection-window check — a hash compare and a date compare, cheap enough to belong here rather than at the end. `LICENSE` and a first `README`. Deploy to `*.workers.dev`. Build the streaming upload path from §14.1 first — retrofitting it later means redoing the client/server contract. *Exit: a phone uploads 10 photos, a 90 MB file succeeds, a bad access code is rejected, and the yearbook lead sees correct attribution in Gumnut.*
+**M1 — Upload path.** Worker + static page. One album, hard-coded. Name, comments, rights statement above the Upload button, privacy text, and district-policy disclaimer (§6). Single-file-per-request **streaming** upload with concurrency pool. Magic-byte validation, size cap, header-field length limits. Stream to `POST /api/assets` → `updateAsset` → album add, with duplicate handling per §15.1 (description written only on 201). Access-code hash check from the start (§16). `LICENSE` and a first `README`. Deploy to `*.workers.dev`. Build the streaming upload path from §14.1 first — retrofitting it later means redoing the client/server contract. *Exit: a phone uploads 10 photos, a 90 MB file succeeds, a bad access code is rejected, and the yearbook lead sees correct attribution in Gumnut.*
 
 **M2 — Albums and QR codes.** Config file, album multi-select, slug-based URL presets, QR generation page. Use the PTA subdomain (likely `yearbook.oldmillpta.org`) when available; Ted handles setup outside this plan, and M2 does not depend on it.
 
-**M3 — Polish and error handling.** Closed-for-the-year page, full error-state coverage (§19.7), `429` retry with `Retry-After` (§14.1), `507` storage-full handling, partial-failure retry.
+**M3 — Polish and error handling.** Full error-state coverage (§19.6), `429` retry with `Retry-After` (§14.1), `507` storage-full handling, partial-failure retry.
 
 **M4 — Hardening and handoff.** Turnstile, per-device and per-IP rate limits, GitHub Actions deploy, full README, account-ownership transfer.
 

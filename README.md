@@ -12,7 +12,7 @@ collection back to anyone.
 
 Planning.
 
-- **[Plan overview](https://claude.ai/design/p/97ac4aa0-49a4-41c6-8130-845f42fc224f?file=Yearbook+Photo+Collection+-+Part+1.dc.html)**
+- **[Plan overview](https://claude.ai/code/artifact/82479c9a-309c-4468-bcb3-eb090112ca9d)**
   — a friendlier read of Part 1, written for the yearbook team: goals, what a
   parent experiences, what the app deliberately does not do, privacy, and the
   decisions we need from the team.
@@ -23,7 +23,9 @@ The full plan includes the September 11 team meeting background and decisions:
 Kari taking over from Roni, the existing Yearbook Avenue workflow, PTA hosting,
 and the district photo-release disclaimer. A [district-policy analysis](docs/DISTRICT-POLICY-ANALYSIS.md)
 records the relevant policies, implications, and remaining evidence gaps. The
-linked team-facing overview has not yet been refreshed with those updates.
+linked team-facing overview includes those updates. The plan now also reflects
+the removal of submission deadlines and the rights checkbox: the app has no
+collection cutoff or closed page, and displays a rights statement above Upload.
 
 ## Stack
 
